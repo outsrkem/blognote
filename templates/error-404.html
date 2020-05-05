@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block base %}
+    <div class="col-sm-9 col-12" style="border: none;">
+        <div class="container" style="">
+            <div class="row">
+                <div class="col-sm-12 col-12" style="border: none;">
+                    <div class="col-12" style="margin: auto">
+                        <img src="/img/404.png" class="img-fluid">
+                    </div>
+                    <script>
+                        setTimeout(function () {
+                            location.href = '/';
+                        }, 3000);
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock base %}
