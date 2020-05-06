@@ -47,8 +47,8 @@ def aaa():
 
 
 if __name__ == '__main__':
-    from controller.index import *
-    app.register_blueprint(index)  # 把蓝图注册到app中
+    from controller.index import index
+    app.register_blueprint(index, url_prefix='/index')  # 把蓝图注册到app中
 
 
     app.run(debug=True)
