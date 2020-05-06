@@ -20,6 +20,7 @@ def page_not_found(error):
     return render_template('error-404.html')
 
 
+
 # 500
 @app.errorhandler(500)
 def server_error(error):
@@ -39,6 +40,9 @@ def gettype():
     }
     return dict(article_ytpe=type)
 
+@app.route('/aaa')
+def aaa():
+    return 'gello .......'
 
 
 if __name__ == '__main__':
