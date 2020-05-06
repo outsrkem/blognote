@@ -1,10 +1,9 @@
 from flask import Flask, render_template, abort
 from flask_sqlalchemy import SQLAlchemy
-from controller import index
 import os
 
-# import pymysql  # ImportError: No module named 'MySQLdb
-# pymysql.install_as_MySQLdb()
+import pymysql  # ImportError: No module named 'MySQLdb
+pymysql.install_as_MySQLdb()
 
 app = Flask(__name__, template_folder='templates', static_url_path='/', static_folder='static')
 app.config['SECRET_KEY'] = os.urandom(24)  # 生成随机数，用于session ID
@@ -47,10 +46,10 @@ def aaa():
 
 
 if __name__ == '__main__':
-    from controller.index import index
-    app.register_blueprint(index, url_prefix='/index')  # 把蓝图注册到app中
+    from controller.index import *
+    app.register_blueprint(index)  # 把蓝图注册到app中
 
 
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
 
 #   flask run --host=0.0.0.0
