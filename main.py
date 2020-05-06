@@ -1,5 +1,6 @@
 from flask import Flask, render_template, abort
 from flask_sqlalchemy import SQLAlchemy
+from controller import index
 import os
 
 # import pymysql  # ImportError: No module named 'MySQLdb
