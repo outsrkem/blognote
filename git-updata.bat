@@ -18,10 +18,10 @@ git tag %version%
 
 git add -A
 git commit -m "%THISDATETIME%"
-git branch dev-%branch_name%
+
 :: 创建并切换分支
 git checkout -b dev-%branch_name%
-git checkout -b dev-2020.05.08
+git push origin dev-%branch_name%
 
 
 TIMEOUT /T 5
