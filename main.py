@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder='templates', static_url_path='/', static_f
 app.config['SECRET_KEY'] = os.urandom(24)  # 生成随机数，用于session ID
 
 # 使用flask_sqlalchemy 集成方式连接数据库
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:123456@10.10.10.24/blognote?charset=utf8'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blognote:123456@10.10.10.24/blognote?charset=utf8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)  # 实例化db对象
 

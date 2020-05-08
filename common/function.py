@@ -19,8 +19,17 @@ def pagination(page, total):
     # 返回处理好的页码，总50页，当前30页，格式如下
     # [1, '...', 28, 29, 30, 31, 32, '...', 50]
     return page_range
+
+
 def loginfo():
     DB_USERNAME = 'blognote'
     DB_PASSWORD = '123456'
-    DB_HOSTIP = os.environ['DB_HOSTIP']
+    try:
+        DB_HOSTIP = os.environ['DB_HOSTIP']
+    except Exception:
+        DB_HOSTIP = '10.10.10.24'
+    DB_PORT = '3306'
+    DB_DATABASE = 'blognote'
+    return DB_USERNAME, DB_PASSWORD,DB_HOSTIP, DB_PORT, DB_DATABASE
+print(loginfo())
 
