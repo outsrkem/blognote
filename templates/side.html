@@ -15,7 +15,7 @@
                 <div class="tip">最新文章</div>
                 <ul id="last">
                     {% for row in last %}
-                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(21)}}</a></li>
+                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(14)}}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -24,7 +24,7 @@
                 <div class="tip">最多阅读</div>
                 <ul id="most">
                     {% for row in most %}
-                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(21)}}</a></li>
+                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(14)}}</a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -33,7 +33,7 @@
                 <div class="tip">特别推荐</div>
                 <ul id="recommended">
                     {% for row in recommended %}
-                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(21)}}</a></li>
+                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(14)}}</a></li>
                     {% endfor %}
                 </ul>
                 <div class="tip" style="background-color: #3276b1; text-align: center; cursor: pointer;" onclick="gotoTop()">

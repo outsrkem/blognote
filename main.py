@@ -29,6 +29,26 @@ def page_not_found(error):
 def server_error(error):
     return render_template('error-500.html')
 
+# 自定义truncate过滤器
+def mytruncate(s, length, end='...'):
+    # 中文定义为1个字符，英文为0.5个字符
+    # 遍历整个字符串，获取ASCII码，大于 128或256，则为英文
+    #否则是中文
+    count = 0
+    new = ''
+    for c in s:
+        new += c # 没循环一次，将一个字符串添加到new后面
+        if ord(c) <= 128:
+            count +=0.5
+        else:
+            count +=1
+        if count > length:
+            break
+
+    return new + end
+app.jinja_env.filters.update(truncate=mytruncate)
+
+
 @app.context_processor
 def gettype():
     type = {
@@ -53,8 +73,6 @@ from controller.index import * # 一定要在db后面
 
 if __name__ == '__main__':
     app.register_blueprint(index)  # 把蓝图注册到app中
-
-
 
     app.run(debug=True, host='0.0.0.0')
 
