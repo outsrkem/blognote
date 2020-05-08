@@ -30,6 +30,6 @@ def loginfo():
         DB_HOSTIP = '10.10.10.24'
     DB_PORT = '3306'
     DB_DATABASE = 'blognote'
-    return DB_USERNAME, DB_PASSWORD,DB_HOSTIP, DB_PORT, DB_DATABASE
+    return DB_USERNAME, DB_PASSWORD, DB_HOSTIP, DB_PORT, DB_DATABASE
 print(loginfo())
 
