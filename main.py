@@ -1,10 +1,8 @@
 from flask import Flask, render_template, abort
 from flask_sqlalchemy import SQLAlchemy
 import os
-from controller.index import *
 import pymysql  # ImportError: No module named 'MySQLdb
 pymysql.install_as_MySQLdb()
-
 app = Flask(__name__, template_folder='templates', static_url_path='/', static_folder='static')
 app.config['SECRET_KEY'] = os.urandom(24)  # 生成随机数，用于session ID
 
@@ -12,6 +10,7 @@ app.config['SECRET_KEY'] = os.urandom(24)  # 生成随机数，用于session ID
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:123456@10.10.10.24/blognote?charset=utf8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)  # 实例化db对象
+
 
 
 # 定制404返回页面
@@ -45,9 +44,12 @@ def aaa():
     return 'gello .......'
 
 
-if __name__ == '__main__':
 
+from controller.index import * # 一定要在db后面
+
+if __name__ == '__main__':
     app.register_blueprint(index)  # 把蓝图注册到app中
+
 
 
     app.run(debug=True, host='0.0.0.0')
