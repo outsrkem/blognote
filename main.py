@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 import os
 import pymysql  # ImportError: No module named 'MySQLdb
@@ -65,6 +65,12 @@ def gettype():
 @app.route('/aaa')
 def aaa():
     return 'gello .......'
+
+# 添加文件下载功能
+@app.route("/download/<filename>")
+def download(filename):
+    directory = os.getcwd()
+    return send_from_directory(r"download", filename=filename, as_attachment=True)
 
 
 
