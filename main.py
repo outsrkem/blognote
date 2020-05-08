@@ -2,7 +2,6 @@ from flask import Flask, render_template, abort
 from flask_sqlalchemy import SQLAlchemy
 import os
 import pymysql  # ImportError: No module named 'MySQLdb
-
 from common.function import loginfo
 
 pymysql.install_as_MySQLdb()
