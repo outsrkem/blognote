@@ -31,5 +31,5 @@ def loginfo():
     DB_PORT = '3306'
     DB_DATABASE = 'blognote'
     return DB_USERNAME, DB_PASSWORD, DB_HOSTIP, DB_PORT, DB_DATABASE
-print(loginfo())
+print('数据库连接信息--->{用户名：%s,密码：%s,数据库IP：%s,数据库端口：%s,数据库名称：%s}'%loginfo())
 
