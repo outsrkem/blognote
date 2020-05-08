@@ -1,7 +1,7 @@
 from flask import Flask, render_template, abort
 from flask_sqlalchemy import SQLAlchemy
 import os
-
+from controller.index import *
 import pymysql  # ImportError: No module named 'MySQLdb
 pymysql.install_as_MySQLdb()
 
@@ -46,7 +46,7 @@ def aaa():
 
 
 if __name__ == '__main__':
-    from controller.index import *
+
     app.register_blueprint(index)  # 把蓝图注册到app中
 
 
