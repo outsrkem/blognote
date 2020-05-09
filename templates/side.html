@@ -13,29 +13,17 @@
             <!--最新文章-->
             <div class="col-12 side">
                 <div class="tip">最新文章</div>
-                <ul id="last">
-                    {% for row in last %}
-                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(14)}}</a></li>
-                    {% endfor %}
-                </ul>
+                <ul id="last"></ul>
             </div>
             <!--最多阅读-->
             <div class="col-12 side">
                 <div class="tip">最多阅读</div>
-                <ul id="most">
-                    {% for row in most %}
-                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(14)}}</a></li>
-                    {% endfor %}
-                </ul>
+                <ul id="most"></ul>
             </div>
 
             <div class="col-12 side" id="fixedmenu">
                 <div class="tip">特别推荐</div>
-                <ul id="recommended">
-                    {% for row in recommended %}
-                    <li><a href="/article/{{ row.articleid }}">{{loop.index}}. {{ row.headline |truncate(14)}}</a></li>
-                    {% endfor %}
-                </ul>
+                <ul id="recommended"></ul>
                 <div class="tip" style="background-color: #3276b1; text-align: center; cursor: pointer;" onclick="gotoTop()">
                     回到顶部
                 </div>
@@ -179,4 +167,39 @@
         }
         location.href = '/search/1-' + keyword;
     }
+{#搜索框功能javascript结束#}
+
+    {#边侧栏开始#}
+    // 在jQuert表示在文档加载完成后开始执行（不需要事件触发），
+    //等价于 window.load=function(){}
+    $(document).ready(function () {
+        // 1、请求接口，获取json
+        $.get('/recommended', function (data) {
+            // alert(data); //调试用
+        // 2、获取响应填充到推荐栏中
+            var lastData = data[0];
+            var mostData = data[1];
+            var recommendedData = data[2];
+
+            for (var i in lastData){
+                var articleid = lastData[i][0];
+                var headline = lastData[i][1];
+                var id = parseInt(i) + 1;
+                $("#last").append('<li><a href="/article/'+articleid+'">'+id+'. '+headline.substring(0,14)+'...</a></li>');
+            }
+            for (var i in mostData){
+                var articleid = mostData[i][0];
+                var headline = mostData[i][1];
+                var id = parseInt(i) + 1;
+                $("#most").append('<li><a href="/article/'+articleid+'">'+id+'. '+headline.substring(0,14)+'...</a></li>');
+            }
+            for (var i in recommendedData){
+                var articleid = recommendedData[i][0];
+                var headline = recommendedData[i][1];
+                var id = parseInt(i) + 1;
+                $("#recommended").append('<li><a href="/article/'+articleid+'">'+id+'. '+headline.substring(0,14)+'...</a></li>');
+            }
+        })
+    })
+    {#边侧栏结束#}
 </script>

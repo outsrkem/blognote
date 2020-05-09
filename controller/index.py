@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, jsonify
 from module.article import Article
 import math
 from common.function import pagination #引用页码函数
@@ -48,3 +48,11 @@ def search(page, keyword):
     result = article.fine_by_headline(keyword, start, 10)
     total = math.ceil(article.get_count_by_headline(keyword) / 10)
     return render_template('search.html', result=result, page=page, total=total, keyword=keyword)
+
+# 定义边侧栏数据接口，返回json格式
+@index.route('/recommended')
+def recommended():
+    article = Article()
+    # last, most, recommended ： 这是一个数据对象
+    last, most, recommended = article.find_last_most_recommended()
+    return jsonify(last, most, recommended)

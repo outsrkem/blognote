@@ -69,3 +69,15 @@ if __name__ == '__main__':
     # 删除操作
     row = dbsession.query(Users).filter_by(userid='5').delete()
     dbsession.commit()
+
+    # 把模型对象转换为json对象
+    result = dbsession.query(Users).all()
+    print(result)
+    list = []
+    for row in result:
+        dict = {}
+        for k,v in row.__dict__.items():
+            if not k.startswith('_sa_instance_state'):
+                dict[k] = v
+            list.append(dict)
+    print(list)

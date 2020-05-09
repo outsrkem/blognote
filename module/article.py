@@ -60,6 +60,7 @@ class Article(DBase):
 
 # 右侧栏数据
     # 最新文章
+    # [(id, headline),(id, headline)] ,这样的结果可以直接被jsonify处理
     def find_list_9(self):
         result = dbsession.query(Article.articleid, Article.headline). \
             filter(Article.hidden==0, Article.drafted==0, Article.checked==1).\
