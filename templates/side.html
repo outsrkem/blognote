@@ -170,6 +170,25 @@
 {#搜索框功能javascript结束#}
 
     {#边侧栏开始#}
+    // 利用js截取字符串，中文1个，英文0.5个
+    function truncate(headline, length){
+        var count = 0;
+        var output = '';
+        for (var i in headline) {
+            output +=headline.charAt(i);
+            var code = headline.charCodeAt(i);
+            if (code <= 128){
+                count += 0.5;
+            }
+            else {
+                count += 1;
+            }
+            if (count > length){
+                break;
+            }
+        }
+        return output + '...'
+    }
     // 在jQuert表示在文档加载完成后开始执行（不需要事件触发），
     //等价于 window.load=function(){}
     $(document).ready(function () {
@@ -185,19 +204,20 @@
                 var articleid = lastData[i][0];
                 var headline = lastData[i][1];
                 var id = parseInt(i) + 1;
-                $("#last").append('<li><a href="/article/'+articleid+'">'+id+'. '+headline.substring(0,14)+'...</a></li>');
+                //$("#last").append('<li><a href="/article/'+articleid+'">'+id+'. '+headline.substring(0,14)+'...</a></li>');
+                $("#last").append('<li><a href="/article/'+articleid+'">'+id+'. '+truncate(headline,14)+'</a></li>');
             }
             for (var i in mostData){
                 var articleid = mostData[i][0];
                 var headline = mostData[i][1];
                 var id = parseInt(i) + 1;
-                $("#most").append('<li><a href="/article/'+articleid+'">'+id+'. '+headline.substring(0,14)+'...</a></li>');
+                $("#most").append('<li><a href="/article/'+articleid+'">'+id+'. '+truncate(headline,14)+'</a></li>');
             }
             for (var i in recommendedData){
                 var articleid = recommendedData[i][0];
                 var headline = recommendedData[i][1];
                 var id = parseInt(i) + 1;
-                $("#recommended").append('<li><a href="/article/'+articleid+'">'+id+'. '+headline.substring(0,14)+'...</a></li>');
+                $("#recommended").append('<li><a href="/article/'+articleid+'">'+id+'. '+truncate(headline,14)+'</a></li>');
             }
         })
     })
