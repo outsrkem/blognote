@@ -1,4 +1,3 @@
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <div class="col-sm-3 col-12" style="border: none; padding-right: 0px; padding-top: 15px">
             <!--搜索框开始-->
             <div class="col-12 search-bar row">
@@ -14,29 +13,17 @@
             <!--最新文章-->
             <div class="col-12 side">
                 <div class="tip">最新文章</div>
-                <ul id="last">
-                    <li v-for="(article, index) in content">
-                        <a v-bind:href="'/article/' + article[0]">${index+1}. ${article[1].substr(0,15)}...</a>
-                    </li>
-                </ul>
+                <ul id="last"></ul>
             </div>
             <!--最多阅读-->
             <div class="col-12 side">
                 <div class="tip">最多阅读</div>
-                <ul id="most">
-                    <li v-for="(article, index) in content">
-                        <a :href="'/article/' + article[0]">${index+1}. ${article[1].substr(0,15)}...</a>
-                    </li>
-                </ul>
+                <ul id="most"></ul>
             </div>
 
             <div class="col-12 side" id="fixedmenu">
-                <div class="tip" id="fixedmenu">特别推荐</div>
-                <ul id="recommended">
-                    <li v-for="(article, index) in content">
-                        <a :href="'/article/' + article[0]">${index+1}. ${article[1].substr(0,15)}...</a>
-                    </li>
-                </ul>
+                <div class="tip">特别推荐</div>
+                <ul id="recommended"></ul>
                 <div class="tip" style="background-color: #3276b1; text-align: center; cursor: pointer;" onclick="gotoTop()">
                     回到顶部
                 </div>
@@ -213,61 +200,26 @@
             var mostData = data[1];
             var recommendedData = data[2];
 
-            var v1 = new Vue({
-                el: '#last', //绑定的元素不可与v-for同级
-                data: {content: lastData},
-                delimiters: ['${','}']  //自定义分隔符
-            });
-            var v2 = new Vue({
-                el: '#most', //绑定的元素不可与v-for同级
-                data: {content: mostData},
-                delimiters: ['${','}']  //自定义分隔符
-            });
-            var v3 = new Vue({
-                el: '#recommended', //绑定的元素不可与v-for同级
-                data: {content: recommendedData},
-                delimiters: ['${','}']  //自定义分隔符
-            });
+            for (var i in lastData){
+                var articleid = lastData[i][0];
+                var headline = lastData[i][1];
+                var id = parseInt(i) + 1;
+                //$("#last").append('<li><a href="/article/'+articleid+'">'+id+'. '+headline.substring(0,14)+'...</a></li>');
+                $("#last").append('<li><a href="/article/'+articleid+'">'+id+'. '+truncate(headline,14)+'</a></li>');
+            }
+            for (var i in mostData){
+                var articleid = mostData[i][0];
+                var headline = mostData[i][1];
+                var id = parseInt(i) + 1;
+                $("#most").append('<li><a href="/article/'+articleid+'">'+id+'. '+truncate(headline,14)+'</a></li>');
+            }
+            for (var i in recommendedData){
+                var articleid = recommendedData[i][0];
+                var headline = recommendedData[i][1];
+                var id = parseInt(i) + 1;
+                $("#recommended").append('<li><a href="/article/'+articleid+'">'+id+'. '+truncate(headline,14)+'</a></li>');
+            }
         })
-    });
+    })
     {#边侧栏结束#}
-
-
-    $(document).ready(function(){
-        // 利用浏览器的user-agent属性判断浏览器类型
-        var userAgentInfo = navigator.userAgent.toLowerCase();
-        var agents = ["android", "iphone", "symbianOS", "windows phone", "ipad", "ipod"];
-        var flag = true;    // 表示是PC端
-        for (var v = 0; v < agents.length; v++) {
-            if (userAgentInfo.indexOf(agents[v]) >= 0) {
-                flag = false;   // 表示这是移动端
-                break;
-            }
-        }
-
-        // 是PC端时才进行右侧停靠
-        if (flag == true) {
-            var fixedDiv = document.getElementById("fixedmenu");
-            var H = 0;
-            var Y = fixedDiv;
-            while (Y) {
-                H += Y.offsetTop;
-                Y = Y.offsetParent;
-            }
-
-            window.onscroll = function () {
-                var s = document.body.scrollTop || document.documentElement.scrollTop;
-                if (s > H + 500) {
-                    fixedDiv.style = "position:fixed; top:0; margin-top:0; width: 306px;";
-                } else {
-                    fixedDiv.style = "";
-                }
-            }
-        }
-    });
-    // 回到顶部功能
-    function gotoTop() {
-        $('html, body').animate({scrollTop: 0}, 800);
-        return false;
-    }
 </script>

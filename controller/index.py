@@ -7,8 +7,8 @@ index = Blueprint("index", __name__)
 @index.route('/')
 def home():
     article = Article()
-    result = article.find_limit_with_users(0, 3)
-    total = math.ceil(article.get_total_count() / 3)   # 总页数
+    result = article.find_limit_with_users(0, 10)
+    total = math.ceil(article.get_total_count() / 10)   # 总页数
     # 首页页码直接为1 即可
     page = 1
     # 页码列表
@@ -20,10 +20,10 @@ def home():
 # 分页接口
 @index.route('/page/<int:page>')
 def paginate(page):
-    start = (page - 1) * 3
+    start = (page - 1) * 10
     article = Article()
-    result = article.find_limit_with_users(start, 3)
-    total = math.ceil(article.get_total_count() / 3)   # 获取总页数
+    result = article.find_limit_with_users(start, 10)
+    total = math.ceil(article.get_total_count() / 10)   # 获取总页数
     page_range = pagination(page, total)
     return render_template('index.html', result=result, page=page, total=total, page_range=page_range)
 
