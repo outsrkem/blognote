@@ -83,7 +83,7 @@
                     {% if page_num == page %}        {# 判断是否当前页 是则高亮 #}
                         <li class="page-item active" aria-current="page"><span class="page-link">{{ page_num }}<span class="sr-only">(current)</span></span></li>
                     {% else %}
-                        {% if page_num == '...' %}
+                        {% if page_num == '..' %}
                         {#如果为  ... 不显示超链接#}
                             <li class="page-item disabled"><span class="page-link">{{ page_num }}</span></li>
                         {% else %}

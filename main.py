@@ -75,10 +75,10 @@ def download(filename):
 
 
 from controller.index import * # 一定要在db后面
-
+from controller.user import *
 if __name__ == '__main__':
     app.register_blueprint(index)  # 把蓝图注册到app中
-
+    app.register_blueprint(user)
     app.run(debug=True, host='0.0.0.0')
 
 #   flask run --host=0.0.0.0

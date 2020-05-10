@@ -1,15 +1,14 @@
-# 页码函数
 import os
 
-
+# 页码显示功能
 def pagination(page, total):
     # 传递2个参数，page为当前页，total为总页数
     page_range = [x for x in range(int(page) - 2, int(page) + 3) if 0 < x <= total]
     # 加上省略号标记
     if page_range[0] - 1 >= 2:
-        page_range.insert(0, '...')
+        page_range.insert(0, '..')
     if total - page_range[-1] >= 2:
-        page_range.append('...')
+        page_range.append('..')
     # 加上首页和尾页,total 为总页数，在数据库获取
     # 加上首页和尾页
     if page_range[0] != 1:
@@ -20,7 +19,7 @@ def pagination(page, total):
     # [1, '...', 28, 29, 30, 31, 32, '...', 50]
     return page_range
 
-
+# Mysql连接信息
 def loginfo():
     DB_USERNAME = 'blognote'
     DB_PASSWORD = '123456'
