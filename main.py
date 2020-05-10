@@ -85,7 +85,9 @@ def gettype():
 
 @app.route('/aaa')
 def aaa():
-    return 'gello .......'
+    # return 'gello .......'
+
+    return render_template('article-user.html', result=8)
 
 # 添加文件下载功能
 @app.route("/download/<filename>")
@@ -101,9 +103,11 @@ def download(filename):
 if __name__ == '__main__':
     from controller.index import *
     from controller.user import *
+    from controller.article import *
 
     app.register_blueprint(index)  # 把蓝图注册到app中
     app.register_blueprint(user)
+    app.register_blueprint(article)
 
     app.run(debug=True, host='0.0.0.0')
 

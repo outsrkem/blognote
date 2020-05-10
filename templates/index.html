@@ -39,7 +39,7 @@
                     <img src="/img/{{ article.thumbnail }}" class="img-fluid">
                 </div>
                 <div class="col-sm-9 col-xs-12 detail">
-                    <div class="title"><a href="{{ article.articleid }}">{{ article.headline }}</a></div>
+                    <div class="title"><a href="/article/{{ article.articleid }}">{{ article.headline }}</a></div>
                     <div class="info">作者：{{ nickname }}&nbsp;&nbsp;&nbsp;类别：{{ article_ytpe[article.type |string] }}&nbsp;&nbsp;&nbsp;日期：{{ article.createtime }}&nbsp;&nbsp;&nbsp;阅读：{{ article.readcount }}
                         次&nbsp;&nbsp;&nbsp;消耗积分：{{ article.credit }} 分
                     </div>

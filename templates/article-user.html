@@ -1,257 +1,84 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>我的博客</title>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='img/favicon.ico') }}" />
-    <script type="text/javascript" src="static/jquery-3.4.1/jquery-3.4.1.js"></script>
-    <link rel="stylesheet" type="text/css" href="static/bootstrap-4.4.1/css/bootstrap.css"/>
-    <script type="text/javascript" src="static/bootstrap-4.4.1/js/bootstrap.js"></script>
-    <link rel="stylesheet" type="text/css" href="static/bootstrap-4.4.1/css/mystyle.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scaalable=yes"/>
-    <link href="static/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
-</head>
-<body>
+{% extends 'base.html' %}
+{% block base %}
+    <div class="col-sm-9 col-12" style="border: none;">
 
-<!--顶部logo和slogan-->
-<div class="header"></div>
-    <div class="container" style="height: 80px; border: solid 0px red">
-        <div class="row">
-            <div class="col-5" style="padding-top: 10px"><img src="static/img/logo.png" width="230; img-fluid"/></div>
-            <div class="col-7 d-none d-sm-block" style="text-align: right; border: solid 0px; padding-top: 15px">
-                <h2>以蜗牛之名, 行学习之实</h2>
+        <div class="col-12 article-detail row">
+            <div class="col-9 title">
+                {{ article.headline }}
             </div>
-            <div class="col-7 d-sm-none" style="text-align: right; border: solid 0px; padding-top: 15px">
-                <h2>技术博客</h2>
+
+            <div class="col-3 favorite">
+                <label class="favorite-btn" onclick="addFavorite('246')">
+                    <span class="oi oi-heart" aria-hidden="true"></span> 收藏本文
+                </label>
+            </div>
+
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 info">
+                作者：{{ article.nickname }} &nbsp;&nbsp;&nbsp;类别：{{ article_ytpe[article.type |string] }}&nbsp;&nbsp;&nbsp;
+                日期：{{ article.createtime }} &nbsp;&nbsp;&nbsp;
+                阅读：{{ article.readcount }}次&nbsp;&nbsp;&nbsp;消耗积分：{{ article.credit }} 分
+            </div>
+            <div class="col-12 content" id="content">
+                {{article.content |safe}}<!-- |safe  要保持HTML原样输出，不能转义，加载html样式 -->
+            </div>
+
+            <!-- 只有需要消耗积分的文章且未曾支付积分的文章才显示阅读全文按钮 -->
+            <div class="col-12 favorite" style="margin: 30px 0px;">
+                <!-- 只有文章作者可以编辑该文章 -->
+                &nbsp;&nbsp;&nbsp;
+                <!-- 收藏和取消收藏按钮 -->
+                <label class="favorite-btn" onclick="addFavorite('246')">
+                    <span class="oi oi-heart" aria-hidden="true"></span> 收藏本文
+                </label>
             </div>
         </div>
-    </div>
-</div>
+        <!--文章内容-->
 
-<!--导航栏-->
-<div class="menu" style="">
-    <div class="container" style="border: solid 0px red; padding: 0px">
-        <nav class="navbar navbar-expand-lg navbar-dark menu-bar" style="background-color: #563d7c">
-            <a class="navbar-brand" href="#">快捷导航</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <!-- 直接读取配置文件来构建分类导航菜单 -->
-                    <a class="nav-item nav-link" href="/type/1-1">PHP开发</a>
-                    <a class="nav-item nav-link" href="/type/2-1">Java开发</a>
-                    <a class="nav-item nav-link" href="/type/3-1">Python开发</a>
-                    <a class="nav-item nav-link" href="/type/4-1">Web前端</a>
-                    <a class="nav-item nav-link" href="/type/5-1">测试开发</a>
-                    <a class="nav-item nav-link" href="/type/6-1">数据科学</a>
-                    <a class="nav-item nav-link" href="/type/7-1">网络安全</a>
-                    <a class="nav-item nav-link" href="/type/8-1">蜗牛杂谈</a>
+
+        <div class="col-12 article-nav">
+            <div>版权所有，转载本站文章请注明出处：蜗牛笔记， http://www.woniunote.com/article/246</div>
+            <div>上一篇：
+                <a href="/article/{{article.articleid-1}}">利用Java的Executor框架运行多线程</a>
+            </div>
+            <div>下一篇：
+                <a href="/article/{{article.articleid+1}}">利用Java+JSoup实现页面资源的下载</a>
+            </div>
+        </div>
+
+        <div class="col-12 article-comment" id="commenttop">
+            <div class="col-12 row add-comment ">
+                <div class="col-sm-2 col-12">
+                    <label for="nickname">你的昵称：</label>
                 </div>
-                <div class="navbar-nav ml-auto">
-                    <!-- 直接读取配置文件来构建分类导航菜单 -->
-                    <a class="nav-item nav-link" href="#">登录</a>
-                    <a class="nav-item nav-link" href="#">注册</a>
-                    <a class="nav-item nav-link" href="#">用户中心</a>
-
+                <div class="col-sm-10 col-12" style="padding: 0 0 0 10px;">
+                    <input type="text" class="form-control" id="nickname" value="你还未登录，双击此处可登录."
+                           ondblclick="showLogin()" readonly/>
                 </div>
             </div>
-        </nav>
-    </div>
-</div>
-<!--导航栏结束-->
-
-
-<!-- 中部区域布局 -->
-<div class="container" style="padding-top: 20px">
-    <div class="row">
-        <div class="col-sm-9 col-12" style="padding: 0 10px;" id="left">
-            <!--文章内容-->
-            <div class="col-12 article-detail row">
-                <div class="col-9 title">
-                    Python 网络爬虫实战直播课，限额30人，先到先得~
+            <div class="col-12 row">
+                <div class="col-sm-2 col-12">
+                    <label for="comment">你的评论：</label>
                 </div>
-
-                <div class="col-3 favorite">
-                    <label class="favorite-btn" onclick="addFavorite('246')">
-                        <span class="oi oi-heart" aria-hidden="true"></span> 收藏本文
-                    </label>
-                </div>
-
-
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 info">
-                    作者：强哥&nbsp;&nbsp;&nbsp;类别：蜗牛杂谈&nbsp;&nbsp;&nbsp;
-                    日期：2018-12-06 14:23:34&nbsp;&nbsp;&nbsp;
-                    阅读：35 次&nbsp;&nbsp;&nbsp;消耗积分：0 分
-                </div>
-
-
-                <div class="col-12 content" id="content">
-                    <p></p>
-                    <p>Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't
-                        close the modal on click or on escape key press.</p>
-                    <p>
-                    </p>    <!-- 要保持HTML原样输出，不能转义 -->
-                </div>
-
-                <!-- 只有需要消耗积分的文章且未曾支付积分的文章才显示阅读全文按钮 -->
-
-
-                <div class="col-12 favorite" style="margin: 30px 0px;">
-                    <!-- 只有文章作者可以编辑该文章 -->
-                    &nbsp;&nbsp;&nbsp;
-                    <!-- 收藏和取消收藏按钮 -->
-                    <label class="favorite-btn" onclick="addFavorite('246')">
-                        <span class="oi oi-heart" aria-hidden="true"></span> 收藏本文
-                    </label>
-                </div>
-            </div>
-            <!--文章内容-->
-
-
-
-            <div class="col-12 article-nav">
-                <div>版权所有，转载本站文章请注明出处：蜗牛笔记， http://www.woniunote.com/article/246</div>
-                <div>上一篇：
-                    <a href="/article/245">利用Java的Executor框架运行多线程</a>
-                </div>
-                <div>下一篇：
-                    <a href="/article/247">利用Java+JSoup实现页面资源的下载</a>
-                </div>
-            </div>
-
-            <div class="col-12 article-comment" id="commenttop">
-                <div class="col-12 row add-comment ">
-                    <div class="col-sm-2 col-12">
-                        <label for="nickname">你的昵称：</label>
-                    </div>
-                    <div class="col-sm-10 col-12" style="padding: 0 0 0 10px;">
-                        <input type="text" class="form-control" id="nickname" value="你还未登录，双击此处可登录."
-                               ondblclick="showLogin()" readonly/>
-                    </div>
-                </div>
-                <div class="col-12 row">
-                    <div class="col-sm-2 col-12">
-                        <label for="comment">你的评论：</label>
-                    </div>
-                    <div class="col-sm-10 col-12" style="padding: 0 0 0 10px;">
+                <div class="col-sm-10 col-12" style="padding: 0 0 0 10px;">
                             <textarea id="comment" class="form-control" placeholder="请在此留下你的真诚的、感人的、发自肺腑的赞美之词."
                                       style="height: 100px;"></textarea>
-                        <!--<script id="comment" name="comment" type="text/plain"></script>-->
-                    </div>
-                </div>
-                <div class="col-12 row" style="margin-bottom: 20px;">
-                    <div class="col-2"></div>
-                    <div class="col-sm-8 col-12" style="text-align: left; color: #888888;">提示：登录后添加有效评论可享受积分哦！</div>
-                    <div class="col-sm-2 col-12" style="text-align: right">
-                        <button type="button" class="btn btn-primary" onclick="showLogin()">点此登录</button>
-                    </div>
-                </div>
-
-                <div id="commentDiv">
-                    <!-- 循环遍历评论，这部分代码保持不变 -->
-                </div>
-
-            </div>
-            <!-- 由于使用Ajax进行分页，分页导航时不能再使用超链接 -->
-
-
-            <!--文章内容-->
-        </div>
-
-
-        <div class="col-sm-3 col-12" style="border: none; padding-right: 0px; ">
-            <!--搜索框开始-->
-            <div class="col-12 search-bar row">
-                <div class="col-8">
-                    <input type="text" class="form-control" id="keyword" placeholder="请输入关键字"/>
-                </div>
-                <div class="col-4" style="text-align: right;">
-                    <button type="button" class="btn btn-primary">搜索</button>
+                    <!--<script id="comment" name="comment" type="text/plain"></script>-->
                 </div>
             </div>
-            <!--搜索框结束-->
-
-            <!--最新文章-->
-            <div class="col-12 side">
-                <div class="tip">最新文章</div>
-                <ul id="last">
-                    <li><a href="#">1. 测试用例设计（三）...</a></li>
-                    <li><a href="#">2. 测试用例设计（三）...</a></li>
-                    <li><a href="#">3. 测试用例设计（三）...</a></li>
-                    <li><a href="#">4. 测试用例设计（三）...</a></li>
-                    <li><a href="#">6. 测试用例设计（三）...</a></li>
-                    <li><a href="#">7. 测试用例设计（三）...</a></li>
-                    <li><a href="#">8. 测试用例设计（三）...</a></li>
-                    <li><a href="#">9. 测试用例设计（三）...</a></li>
-                </ul>
-            </div>
-            <!--最多阅读-->
-            <div class="col-12 side">
-                <div class="tip">最多阅读</div>
-                <ul id="most">
-                    <li><a href="#">1. 测试用例设计（三）...</a></li>
-                    <li><a href="#">2. 测试用例设计（三）...</a></li>
-                    <li><a href="#">3. 测试用例设计（三）...</a></li>
-                    <li><a href="#">4. 测试用例设计（三）...</a></li>
-                    <li><a href="#">6. 测试用例设计（三）...</a></li>
-                    <li><a href="#">7. 测试用例设计（三）...</a></li>
-                    <li><a href="#">8. 测试用例设计（三）...</a></li>
-                    <li><a href="#">9. 测试用例设计（三）...</a></li>
-                </ul>
-            </div>
-
-            <div class="col-12 side" id="fixedmenu">
-                <div class="tip">特别推荐</div>
-                <ul id="recommended">
-                    <li><a href="#">1. 测试用例设计（三）...</a></li>
-                    <li><a href="#">2. 测试用例设计（三）...</a></li>
-                    <li><a href="#">3. 测试用例设计（三）...</a></li>
-                    <li><a href="#">4. 测试用例设计（三）...</a></li>
-                    <li><a href="#">6. 测试用例设计（三）...</a></li>
-                    <li><a href="#">7. 测试用例设计（三）...</a></li>
-                    <li><a href="#">8. 测试用例设计（三）...</a></li>
-                    <li><a href="#">9. 测试用例设计（三）...</a></li>
-                </ul>
-                <div class="tip" style="background-color: #3276b1; text-align: center; cursor: pointer;"
-                     onclick="gotoTop()">回到顶部
+            <div class="col-12 row" style="margin-bottom: 20px;">
+                <div class="col-2"></div>
+                <div class="col-sm-8 col-12" style="text-align: left; color: #888888;">提示：登录后添加有效评论可享受积分哦！</div>
+                <div class="col-sm-2 col-12" style="text-align: right">
+                    <button type="button" class="btn btn-primary" onclick="showLogin()">点此登录</button>
                 </div>
             </div>
 
-
+            <div id="commentDiv">
+                <!-- 循环遍历评论，这部分代码保持不变 -->
+            </div>
         </div>
 
 
     </div>
-</div>
-
-
-
-<!-- 底部设计 -->
-<div class="container-fluid footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-4 left">
-                <p>版权所有 &copy; 蜗牛笔记 (V-1.0)</p>
-                <p>备案号： 蜀ICP备00000000号</p>
-            </div>
-            <div class="col-4 center">
-                <p>友情链接</p>
-                <p><a href="#" target="_blank">在线课堂</a>&nbsp;&nbsp;&nbsp;
-                    <a href="#" target="_blank">直播课堂</a>&nbsp;&nbsp;&nbsp;
-                    <a href="#" target="_blank">培训中心</a>&nbsp;&nbsp;&nbsp;
-                    <a href="#" target="_blank">UI设计学院</a>
-                </p>
-            </div>
-            <div class="col-4 right">
-                <p>联系我们</p>
-                <p>成都★孵化园&nbsp;&nbsp;&nbsp;QQ/微信：0000023</p>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 底部设计 -->
-
-
-</body>
-</html>
+{% endblock base %}
