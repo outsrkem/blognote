@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, session, request, redirect
+from flask import Blueprint, make_response, session, request, redirect, url_for
 from common.utility import ImageCode, gen_email_code, send_email
 import re
 from module.users import Users
@@ -91,7 +91,7 @@ def login():
             response = make_response('login-pass')
             response.set_cookie('username', username, max_age=30*24*3600)
             response.set_cookie('password', password, max_age=30*24*3600)
-            return 'login-pass'
+            return response
         else:
             return 'login-fail'
 
@@ -100,7 +100,13 @@ def login():
 @user.route('/logout')
 def logout():
     session.clear()
-    return  redirect('/')
+    response = make_response('注销登录并重定向', 302)
+    response.headers['location'] = url_for('index.home')
+    # 清空cookie，下面2条一样的效果，都是清空cookie
+    response.delete_cookie('username')
+    response.set_cookie('password', '',max_age=0)
+    # return  redirect('/')
+    return response
 
 # 自动登录
 # 1. 利用cookie持久化保存登录

@@ -28,6 +28,27 @@ def page_not_found(error):
 def server_error(error):
     return render_template('error-500.html')
 
+# 定义全局拦截器，实现自动登录
+@app.before_request
+def before():
+    url = request.path
+    pass_list = ['/reg', '/login', '/vcode', '/session']
+    if url in pass_list or url.endswith('js') or url.endswith('.css'):
+        pass
+    elif session.get('islogin') is None:
+        username = request.cookies.get('username')
+        password = request.cookies.get('password')
+        if username != None and password != None:
+            user = Users()
+            result = user.find_by_username(username)
+            if len(result) == 1 and result[0].password==password:
+                session['islogin'] = 'true'
+                session['userid'] = result[0].userid
+                session['username'] = username
+                session['nickname'] = result[0].nickname
+                session['role'] = result[0].role
+
+
 # 自定义truncate过滤器
 def mytruncate(s, length, end='...'):
     # 中文定义为1个字符，英文为0.5个字符
