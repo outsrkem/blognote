@@ -1,5 +1,5 @@
-from flask import Blueprint, make_response, session
-from common.utility import ImageCode
+from flask import Blueprint, make_response, session, request
+from common.utility import ImageCode, gen_email_code, send_email
 user = Blueprint('user', __name__)
 
 # 图片验证码接口
@@ -12,3 +12,13 @@ def vcode():
     session['vcode'] = code.lower()
     return response
     # return ('asdad')
+
+@user.route('/ecode', methods=['POST'])
+def ecode():
+    email = request.form.get('email')
+    code = gen_email_code()
+    try:
+        send_email(email, code)
+        return '发送成功'
+    except:
+        return '发送失败'
