@@ -89,6 +89,6 @@ def gen_email_code():
     str = random.sample(string.ascii_letters + string.digits, 6)
     return ''.join(str)
 
-code = gen_email_code()
-print(code)
-send_email('981789763@qq.com', code)
+# code = gen_email_code()
+# print(code)
+# send_email('981789763@qq.com', code)

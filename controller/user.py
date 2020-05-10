@@ -1,5 +1,6 @@
 from flask import Blueprint, make_response, session, request
 from common.utility import ImageCode, gen_email_code, send_email
+import re
 user = Blueprint('user', __name__)
 
 # 图片验证码接口
@@ -16,9 +17,11 @@ def vcode():
 @user.route('/ecode', methods=['POST'])
 def ecode():
     email = request.form.get('email')
+    if not re.match('.+@.+\..+', email):
+        return 'email-invalid'
     code = gen_email_code()
     try:
         send_email(email, code)
-        return '发送成功'
+        return 'send-pass'
     except:
-        return '发送失败'
+        return 'send-fail'
