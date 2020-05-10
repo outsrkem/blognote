@@ -33,7 +33,7 @@ def server_error(error):
 def before():
     url = request.path
     pass_list = ['/reg', '/login', '/vcode', '/session']
-    if url in pass_list or url.endswith('js') or url.endswith('.css'):
+    if url in pass_list or url.endswith('js') or url.endswith('.css') or url.endswith('.png') or url.endswith('.jpg'):
         pass
     elif session.get('islogin') is None:
         username = request.cookies.get('username')
