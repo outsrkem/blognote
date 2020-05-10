@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort, send_from_directory
+from flask import Flask, render_template, abort, send_from_directory, request
 from flask_sqlalchemy import SQLAlchemy
 import os
 import pymysql  # ImportError: No module named 'MySQLdb
