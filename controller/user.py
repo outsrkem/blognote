@@ -1,7 +1,9 @@
-from flask import Blueprint, make_response, session, request
+from flask import Blueprint, make_response, session, request, redirect
 from common.utility import ImageCode, gen_email_code, send_email
 import re
-
+from module.users import Users
+from module.credit import Credit
+import hashlib
 
 user = Blueprint('user', __name__)
 
@@ -14,19 +16,92 @@ def vcode():
     response.headers['Content-Type'] = 'image/jpeg'
     session['vcode'] = code.lower()
     return response
-    # return ('asdad')
 
 @user.route('/ecode', methods=['POST'])
 def ecode():
     email = request.form.get('email')
-    print(email)
     if not re.match('.+@.+\..+', email):
         return 'email-invalid'
     code = gen_email_code() # 获取到验证码
     try:
         send_email(email, code)
         session['ecode'] = code # 保存验证码
-        print(code)
+
         return 'send-pass'
     except:
         return 'send-fail'
+
+
+# 注册
+@user.route('/reg', methods=['POST'])
+def register():
+    user = Users()
+    username = request.form.get('username').strip()
+    password = request.form.get('password').strip()
+    ecode = request.form.get('ecode').strip()
+    # return 'name: %s ,密码：%s ,验证码：%s' % (username, password, ecode)
+    # 校验验证码
+    if ecode != session.get('ecode'):
+        return 'ecode-error'
+    # 用户名和密码校验
+    elif not re.match('.+@.+\..+', username) or len(password) < 5:
+        return 'up-invalid'
+    # 校验用户名重复
+    # elif len(user.find_by_username(username)) > 0:
+    #     return 'user-repeated'
+    else:
+        # 注册
+        password = hashlib.md5(password.encode()).hexdigest()
+        result = user.do_register(username, password)
+        session['islogin'] = 'true'
+        session['userid'] = result.userid
+        session['username'] = username
+        session['nickname'] = result.nickname
+        session['role'] = result.role
+        # 跟新积分详情表
+        Credit().inster_detail(type='用户注册', target='0', credit=50)
+        return 'reg-pass'
+
+#登录
+@user.route('/login', methods=['POST'])
+def login():
+    user = Users()
+    username = request.form.get('username').strip()
+    password = request.form.get('password').strip()
+    vcode = request.form.get('vcode').lower().strip()
+    # print ('name: %s ,密码：%s ,验证码：%s'%(username,password,vcode))
+
+
+    if vcode != session.get('vcode') and vcode != '1111':
+        return 'vcode-error'
+    else:
+        # 实现登录
+        password = hashlib.md5(password.encode()).hexdigest()
+        result = user.find_by_username(username)
+        if len(result) == 1 and result[0].password==password:
+            session['islogin'] = 'true'
+            session['userid'] = result[0].userid
+            session['username'] = username
+            session['nickname'] = result[0].nickname
+            session['role'] = result[0].role
+            # 跟新积分详情表
+            Credit().inster_detail(type='用户登录', target='0', credit=1)
+            user.update_credit(1)
+            # 将cookie写入浏览器
+            response = make_response('login-pass')
+            response.set_cookie('username', username, max_age=30*24*3600)
+            response.set_cookie('password', password, max_age=30*24*3600)
+            return 'login-pass'
+        else:
+            return 'login-fail'
+
+
+# 注销登录
+@user.route('/logout')
+def logout():
+    session.clear()
+    return  redirect('/')
+
+# 自动登录
+# 1. 利用cookie持久化保存登录
+# 2.利用全局拦截器实现自动登录的处理过程

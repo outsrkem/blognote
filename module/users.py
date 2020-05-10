@@ -1,3 +1,4 @@
+from flask import session
 from sqlalchemy import Table
 from common.database import dbconnect
 import time, random
@@ -23,7 +24,7 @@ class Users(DBase):
 
     # credit可正可负
     def update_credit(self, credit):
-        user = dbsession.query(Users).filter_by(userid=dbsession.get('userid')).one()
+        user = dbsession.query(Users).filter_by(userid=session.get('userid')).one()
         user.credit = int(user.credit) + credit
         dbsession.commit()
 

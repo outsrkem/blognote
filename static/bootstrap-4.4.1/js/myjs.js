@@ -45,7 +45,7 @@ function doReg(e) {
         param += "&password=" + regpass;
         param += "&ecode=" + regcode;
         // 利用jQuery框架发送POST请求，并获取到后台注册接口的响应内容
-        $.post('/user/reg', param, function (data) {
+        $.post('/reg', param, function (data) {
             if (data == "ecode-error") {
                 bootbox.alert({title:"错误提示", message:"验证码无效."});
                 $("#regcode").val('');  // 清除验证码框的值
@@ -106,4 +106,45 @@ function showReset() {
     $("#regpanel").removeClass("active");
     $("#findpanel").addClass("active");
     $('#mymodal').modal('show');
+}
+
+
+
+// 登录处理
+function doLogin(e) {
+    if (e != null && e.keyCode != 13) {
+        return false;
+    }
+
+    var loginname = $.trim($("#loginname").val());
+    var loginpass = $.trim($("#loginpass").val());
+    var logincode = $.trim($("#logincode").val());
+    if (regname.length < 5 || regpass.length < 5) {
+        bootbox.alert({title:"错误提示", message:"用户名和密码少于5位."});
+        return false;
+    }
+    else {
+        // 构建POST请求的正文数据
+        param = "username=" + loginname;
+        param += "&password=" + loginpass;
+        param += "&vcode=" + logincode;
+        // 利用jQuery框架发送POST请求，并获取到后台登录接口的响应内容
+        $.post('/login', param, function (data) {
+            // 注意正式使用时，请将PHPMailer的调试输出关闭
+            if (data == "vcode-error") {
+                bootbox.alert({title:"错误提示", message:"验证码无效."});
+                $("#logincode").val('');  // 清除验证码框的值
+                $("#logincode").focus();   // 让验证码框获取到焦点供用户输入
+            }
+            else if (data == "login-pass") {
+                bootbox.alert({title:"信息提示", message:"恭喜你，登录成功."});
+                // 注册成功后，延迟1秒钟重新刷新当前页面即可
+                setTimeout('location.reload();', 1000);
+
+            }
+            else if (data == "login-fail") {
+                bootbox.alert({title:"错误提示", message:"登录失败，请确认用户名和密码是否正确."});
+            }
+        });
+    }
 }

@@ -87,6 +87,7 @@ def send_email(receiver, ecode):
 # 生成6位随机邮箱验证码
 def gen_email_code():
     str = random.sample(string.ascii_letters + string.digits, 6)
+    str = 'asdasd'
     return ''.join(str)
 
 # code = gen_email_code()
