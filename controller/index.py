@@ -1,6 +1,9 @@
-from flask import Blueprint, render_template, abort, jsonify
+from flask import Blueprint, render_template, abort, jsonify, session, request
 from module.article import Article
-import math
+from module.credit import Credit
+from module.users import Users
+import math, re
+import hashlib
 from common.function import pagination #引用页码函数
 index = Blueprint("index", __name__)
 
@@ -56,3 +59,37 @@ def recommended():
     # last, most, recommended ： 这是一个数据对象
     last, most, recommended = article.find_last_most_recommended()
     return jsonify(last, most, recommended)
+
+
+
+
+@index.route('/user/reg', methods=['POST'])
+def register():
+    user = Users()
+    username = request.form.get('username').strip()
+    password = request.form.get('password').strip()
+    ecode = request.form.get('ecode').strip()
+
+    # 校验验证码
+    print(ecode)
+    if ecode != session.get('ecode'):
+        return 'ecode-error'
+    # 用户名和密码校验
+    elif not re.match('.+@.+\..+', username) or len(password) < 5:
+        return 'up-invalid'
+    # 校验用户名重复
+    # elif len(user.find_by_username(username)) > 0:
+    #     return 'user-repeated'
+    else:
+        # 注册
+        password = hashlib.md5(password.encode()).hexdigest()
+        result = user.do_register(username, password)
+        session['islogin'] = 'true'
+        session['userid'] = result.userid
+        session['username'] = username
+        session['nickname'] = result.nickname
+        session['role'] = result.role
+        # 跟新积分详情表
+        Credit().inster_detail(type='用户注册', target='0', credit=50)
+        return 'reg-pass'
+
