@@ -3,14 +3,12 @@ from module.article import Article
 import math, re
 import hashlib
 from common.function import pagination #引用页码函数
-from module.users import Users
+
 
 index = Blueprint("index", __name__)
 
 @index.route('/')
 def home():
-
-
     article = Article()
     result = article.find_limit_with_users(0, 10)
     total = math.ceil(article.get_total_count() / 10)   # 总页数
