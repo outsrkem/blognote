@@ -15,7 +15,6 @@ class ImageCode:
     # 生成4位随机字符串
     def gen_text(self):
         list = random.sample(string.ascii_letters+string.digits,4)
-        print(''.join(list))
         return ''.join(list)
 
     # 绘制干扰线

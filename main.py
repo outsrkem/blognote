@@ -100,7 +100,7 @@ def download(filename):
 # 接口测试
 @app.after_request
 def foot_log(environ):
-    print("有客人访问了",request.path)
+    print("访问接口--->",request.path)
     return environ
 
 
