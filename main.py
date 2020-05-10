@@ -96,6 +96,12 @@ def download(filename):
     return send_from_directory(r"download", filename=filename, as_attachment=True)
 
 
+# 接口测试
+@app.after_request
+def foot_log(environ):
+    print("有客人访问了",request.path)
+    return environ
+
 
  # 一定要在db后面
 # from controller.user import *
