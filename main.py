@@ -117,6 +117,6 @@ if __name__ == '__main__':
     app.register_blueprint(user)
     app.register_blueprint(article)
 
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
 
 #   flask run --host=0.0.0.0

@@ -31,7 +31,7 @@ class ImageCode:
         code = self.gen_text()
         width,height = 120, 50  #图片大小
         # im = Image.new('RGB', (width, height), 'black')  # 黑背景
-        im = Image.new('RGB', (width, height),'white')   # 无背景
+        im = Image.new('RGB', (width, height),(137,169,163))   # 自定义背景
         # im.show()  # 临时调试，打开图片
         font = ImageFont.truetype(font='arial.ttf', size=40)
         draw = ImageDraw.Draw(im)
@@ -39,7 +39,7 @@ class ImageCode:
             draw.text((5 + random.randint(-3, 3) + 23 * i, 5 + random.randint(-3, 3)),
                       text=code[i], fill=self.rand_color(), font=font)
         # 绘制干扰线
-        self.draw_lines(draw, 6, width, height)
+        self.draw_lines(draw, 3, width, height)
         return im, code
         # im.show()
 # 调试

@@ -21,6 +21,7 @@ def read(articleid):
     print(dict)
     dict['nickname'] = result.nickname
 
+    # 显示一半文章
     content = dict['content']
     temp = content[0:int(len(content)/4)]
     position = temp.rindex('</p>') + 4

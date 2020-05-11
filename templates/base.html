@@ -12,8 +12,6 @@
     <script type="text/javascript" src="/bootbox/bootbox.all.js"></script>
     <script type="text/javascript" src="/bootstrap-4.4.1/js/myjs.js"></script>
 </head>
-<>
-
 <!--顶部logo和slogan-->
 <div class="header">
     <div class="container" style="height: 80px; border: solid 0px red">
@@ -119,11 +117,11 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="logincode" class="col-4"> &nbsp;&nbsp;图片验证码：</label>
-                                        <input type="text" id="logincode" class="form-control col-5"
-                                               placeholder="请输入右侧的验证码"
+                                        <input type="text" id="logincode" class="form-control col-4"
+                                               placeholder="请输入验证码"
                                                onkeyup="doLogin(event)"/>
-                                        <img src="/vcode" id="loginvcode" class="col-3" style="cursor:pointer;"
-                                             onclick="this.src='/vcode?'+Math.random()"/>
+
+                                        <img src="/vcode" title="点击更换验证码" id="loginvcode" class="col-3" style="cursor:pointer;" onclick="this.src='/vcode?'+Math.random()"/>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
