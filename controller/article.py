@@ -1,6 +1,7 @@
 from flask import Blueprint, abort, render_template, request
 from module.article import Article
 from module.credit import Credit
+from module.favorite import Favorite
 from module.users import Users
 
 article = Blueprint('article', __name__)
@@ -35,7 +36,12 @@ def read(articleid):
         dict['content'] = temp[0:position]
         # print(dict['content'])
     Article().update_read_count(articleid) # 阅读次数加1
-    return render_template('article-user.html', article=dict, position=position, payed=payed)
+    is_favorite = Favorite().check_favorite(articleid) # 检测文章是否被收藏
+    # print('检测文章是否被收藏 %s'%is_favorite)
+    # 获取当前文章的上一篇和下一篇
+    prev_next = Article().find_prev_next_by_id(articleid)
+    return render_template('article-user.html', article=dict, position=position, payed=payed,
+                           is_favorite=is_favorite, prev_next=prev_next)
 
 # 消耗积分的文章展示文章剩余内容，虽然这个接口不显示，但是还要处理，已防绕开前端界面被直接调用
 @article.route('/article/readall', methods=['POST'])

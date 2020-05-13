@@ -111,11 +111,13 @@ if __name__ == '__main__':
     from controller.index import *
     from controller.user import *
     from controller.article import *
+    from controller.favorite import *
 
     app.register_blueprint(index)  # 把蓝图注册到app中
     # app.register_blueprint(user, url_prefix='/user')
     app.register_blueprint(user)
     app.register_blueprint(article)
+    app.register_blueprint(favorite)
 
     app.run(debug=True)
 

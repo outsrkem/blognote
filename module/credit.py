@@ -13,14 +13,14 @@ class Credit(DBase):
         now = time.strftime('%Y-%m-%d %H:%M:%S')
         credit = Credit(userid=session.get('userid'), category=type, target=target, credit=credit, createtime=now,
                         updatetime=now)
-        print(session.get('userid'))
+        # print(session.get('userid'))
         dbsession.add(credit)
         dbsession.commit()
 
     # 判断用户是否已经消耗积分
     def check_payed_article(self, articleid):
         result = dbsession.query(Credit).filter_by(userid=session.get('userid'), target=articleid).all() #返回的是一个列表
-        print(result)
+        # print(result)
         if len(result) > 0:
             return True
         else:

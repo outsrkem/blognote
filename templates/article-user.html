@@ -8,9 +8,13 @@
             </div>
 
             <div class="col-3 favorite">
-                <label class="favorite-btn" onclick="addFavorite('246')">
-                    <span class="oi oi-heart" aria-hidden="true"></span> 收藏本文
-                </label>
+                {% if is_favorite == True %}
+                <label class="favorite-but" onclick="cancelFavorite('{{article.articleid}}')"><span class="oi oi-heart" aria-hidden="true"></span> 取消收藏</label>
+                {% else %}
+                            <!--favorite-but  : 用于定位这个元素，和id 一样的效果 ,此处要修改<span里面胡内容-->
+                <label class="favorite-but" onclick="addFavorite('{{article.articleid}}')"><span class="oi oi-heart" aria-hidden="true"></span> 收藏本文</label>
+                {% endif %}
+                <!--article.userid == session.get('userid') 判断当前登录用户为文章作者 -->
             </div>
 
 
@@ -45,12 +49,12 @@
 
 
         <div class="col-12 article-nav">
-            <div>版权所有，转载本站文章请注明出处：蜗牛笔记， http://www.woniunote.com/article/246</div>
+            <div>版权所有，转载本站文章请注明出处 http://www.woniunote.com/article/{{ article.articleid }}</div>
             <div>上一篇：
-                <a href="/article/{{ article.articleid-1 }}">利用Java的Executor框架运行多线程</a>
+                <a href="/article/{{ prev_next.prev_id }}">{{ prev_next.prev_headline }}</a>
             </div>
             <div>下一篇：
-                <a href="/article/{{ article.articleid+1}}">利用Java+JSoup实现页面资源的下载</a>
+                <a href="/article/{{ prev_next.next_id}}">{{ prev_next.next_headline }}</a>
             </div>
         </div>
 
@@ -89,6 +93,7 @@
     </div>
 
 <script>
+    // 阅读全文函数
     function readAll() {
         var param = 'articleid={{ article.articleid }}&position={{ position }}';
         $.post('readall', param, function (data) {
@@ -97,5 +102,47 @@
         })
     }
 
+    // 收藏和取消收藏
+    function addFavorite(articleid) {
+        $.post('/favorite', 'articleid='+articleid,function (data) {
+            if (data == 'not-login'){
+                bootbox.alert({title:"错误提示", message:"你还没有登录，不能收藏文章，请登录后收藏。"});
+            }
+            else if (data == 'favorite-pass'){
+                bootbox.alert({title:"提示", message:"收藏成功"});
+                /*  收藏成功以后做以下几个事。
+                    1.  菜单名称修改为感谢收藏
+                    2. 取消收藏按钮胡单机事件
+                 */
+                $(".favorite-but").html('<span class="oi oi-heart" aria-hidden="true"></span> 感谢收藏') //菜单名称修改为感谢收藏
+                $(".favorite-but").attr('onclick','').unbind('click'); //取消收藏按钮胡单机事件
+            }
+            else {
+                bootbox.alert({title:"错误提示", message:"收藏失败"});
+            }
+        });
+    }
+    
+    function cancelFavorite(articleid) {
+        //ajax没有delete请求，使用ajax发送任何形式的请求（原生方式）
+        // post get 是已经封装过的
+        $.ajax({
+            url: '/favorite/' + articleid,
+            type: 'delete',
+            success: function (data) {
+                if (data == 'not-login'){
+                    bootbox.alert({title:"错误提示", message:"你还没有登录，不能收藏文章，请登录后收藏。"});
+                }
+                else if (data == 'cancel-pass'){
+                    bootbox.alert({title:"提示", message:"取消收藏成功。"});
+                     $(".favorite-but").html('<span class="oi oi-heart" aria-hidden="true"></span> 欢迎再来') //菜单名称修改为感谢收藏
+                     $(".favorite-but").attr('onclick','').unbind('click'); //取消收藏按钮胡单机事件
+                }
+                else if (data == 'cancel-fail'){
+                    bootbox.alert({title:"错误提示", message:"取消失败，请联系管理员。"});
+                }
+            }
+        });
+    }
 </script>
 {% endblock base %}

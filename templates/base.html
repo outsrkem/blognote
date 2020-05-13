@@ -48,7 +48,6 @@
                     <!-- 直接读取配置文件来构建分类导航菜单 -->
                     {% if session.get('islogin') == 'true' %}
                         <a class="nav-item nav-link" href="#">你好：{{ session.get('nickname') }}</a>
-                        &nbsp;&nbsp;&nbsp;
                         <a class="nav-item nav-link" href="#">用户中心</a>
                         <a class="nav-item nav-link" href="/logout">注销</a>
                     {% else %}

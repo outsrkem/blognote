@@ -18,14 +18,14 @@ def vcode():
 @user.route('/ecode', methods=['POST'])
 def ecode():
     email = request.form.get('email')
-    print(email)
+    # print(email)
     if not re.match('.+@.+\..+', email):
         return 'email-invalid'
     code = gen_email_code() # 获取到验证码
     try:
         send_email(email, code)
         session['ecode'] = code # 保存验证码
-        print(code)
+        # print(code)
         return 'send-pass'
     except:
         return 'send-fail'
