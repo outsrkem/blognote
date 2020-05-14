@@ -17,7 +17,7 @@ class Users(DBase):
         nickname = username.split('@')[0]  #取昵称
         avatar = str(random.randint(1, 9)) # 从9张头像中取得一张
         user = Users(username=username, password=password, role='user', credit=50,
-                     nickname=nickname, avatar=avatar + '.png', createtime=now, updatetime=now)
+                     nickname=nickname, avatar=avatar + '.jpg', createtime=now, updatetime=now)
         dbsession.add(user)
         dbsession.commit()
         return user

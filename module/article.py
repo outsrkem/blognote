@@ -136,6 +136,12 @@ class Article(DBase):
 
         return dict
 
+    # 增加回复次数
+    def update_replycount(self,articleid):
+        row = dbsession.query(Article).filter_by(articleid=articleid).first()
+        row.replycount += 1
+        dbsession.commit()
+
 
 
 

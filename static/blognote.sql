@@ -59,7 +59,7 @@ CREATE TABLE `article` (
 -- ----------------------------
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
-  `commentid` int(11) NOT NULL,
+  `commentid` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
   `articleid` int(11) NOT NULL,
   `content` text,
