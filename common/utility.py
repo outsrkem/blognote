@@ -34,7 +34,8 @@ class ImageCode:
         code = self.gen_text()
         width,height = 120, 50  #图片大小
         # im = Image.new('RGB', (width, height), 'black')  # 黑背景
-        im = Image.new('RGB', (width, height),(137,169,163))   # 自定义背景
+        # im = Image.new('RGB', (width, height),(137,169,163))   # 自定义背景
+        im = Image.new('RGB', (width, height), 'white')   # 白背景
         # im.show()  # 临时调试，打开图片
         font = ImageFont.truetype(font=fontfile, size=40)
         draw = ImageDraw.Draw(im)
