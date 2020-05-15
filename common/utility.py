@@ -1,8 +1,11 @@
-import random, string
+import random, string, os
 from io import BytesIO
-
+from main import STATIC_DIRS
 from PIL import Image, ImageFont, ImageDraw
 
+
+fontfile = os.path.join(STATIC_DIRS, "font", "arial.ttf")
+# print(fontfile)
 
 class ImageCode:
     # 验证码颜色，值下字暗
@@ -33,7 +36,7 @@ class ImageCode:
         # im = Image.new('RGB', (width, height), 'black')  # 黑背景
         im = Image.new('RGB', (width, height),(137,169,163))   # 自定义背景
         # im.show()  # 临时调试，打开图片
-        font = ImageFont.truetype(font='arial.ttf', size=40)
+        font = ImageFont.truetype(font=fontfile, size=40)
         draw = ImageDraw.Draw(im)
         for i in range(4):
             draw.text((5 + random.randint(-3, 3) + 23 * i, 5 + random.randint(-3, 3)),

@@ -14,6 +14,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://%s:%s@%s:%s/%s?charset=
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)  # 实例化db对象
 
+BASE_DIR = os.path.abspath(os.curdir)
+STATIC_DIRS = os.path.join(BASE_DIR, "static")
 
 
 # 定制404返回页面
@@ -105,8 +107,20 @@ def foot_log(environ):
 
 
  # 一定要在db后面
-# from controller.user import *
+'''
+from controller.index import *
+from controller.user import *
+from controller.article import *
+from controller.favorite import *
+from controller.comment import *
 
+# app.register_blueprint(user, url_prefix='/user')
+app.register_blueprint(index)  # 把蓝图注册到app中
+app.register_blueprint(user)
+app.register_blueprint(article)
+app.register_blueprint(favorite)
+app.register_blueprint(commnet)
+'''
 if __name__ == '__main__':
     from controller.index import *
     from controller.user import *
@@ -114,8 +128,8 @@ if __name__ == '__main__':
     from controller.favorite import *
     from controller.comment import *
 
-    app.register_blueprint(index)  # 把蓝图注册到app中
     # app.register_blueprint(user, url_prefix='/user')
+    app.register_blueprint(index)  # 把蓝图注册到app中
     app.register_blueprint(user)
     app.register_blueprint(article)
     app.register_blueprint(favorite)
