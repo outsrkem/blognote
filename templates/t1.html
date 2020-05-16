@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block base %}
+    <div class="col-sm-9 col-12" style="border: none;">
+
+  <!--文章内容-->
+
+
+{#    评论区开始#}
+        <div class="container" style="border: red double"" >
+            <div class="row">
+
+            <div class="col-12 row add-comment ">
+                <div class="col-2">
+                    <label for="nickname">你的昵称：</label>
+                </div>
+            </div>
+
+            <div class="col-12 row">
+
+                <div class="col-2">
+                    <label for="comment">你的评论：</label>
+                </div>
+
+                <div class="col-10">
+                    <textarea class="form-control" style="height: 100px;" id="comment"></textarea>
+                </div>
+
+            </div>
+                <div class="col-12 list row">
+                    <div class="col-2 icon">
+                        <img src="/avatar/1" class="img-fluid" style="width: 45px;"/>
+                    </div>
+                    <div class="col-10 comment">
+                        <div class="col-12 row" style="padding: 0px">
+                            <div class="col-7 commenter">用户昵称</div>
+                            <div class="col-5 reply">
+                                {#  文章作者，管理员和评论者只能回复和影藏，不能点赞#}
+
+                                    <label onclick="gotoReply(1)">
+                                        <span class="oi oi-arrow-circle-right" aria-hidden="true"></span>回复
+                                    </label>&nbsp;&nbsp;&nbsp;
+                                    <label onclick="hideComment(this,1)">
+                                        <span class="oi oi-delete" aria-hidden="true"></span>隐藏
+                                    </label>&nbsp;&nbsp;&nbsp;
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-12 content">评论内容</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="col-12 article-comment" id="commenttop">
+            <div class="col-12 row add-comment ">
+                <div class="col-2">
+                    <label for="nickname">你的昵称：</label>
+                </div>
+
+                <div class="col-10">
+
+                        <input type="text" id="nickname" class="form-control" value="qweqwe"
+                               readonly/>
+
+                        <input type="text" class="form-control" id="nickname" value="你还未登录，双击此处可登录."
+                               ondblclick="showLogin()" readonly/>
+
+                </div>
+
+            </div>
+
+            <div class="col-12 row">
+
+                <div class="col-2">
+                    <label for="comment">你的评论：</label>
+                </div>
+
+                <div class="col-10">
+                    <textarea class="form-control" style="height: 100px;" id="comment"></textarea>
+                </div>
+
+            </div>
+
+            <div class="col-12 row">
+
+                <div class="col-12" style="text-align: right">
+
+                    <button class="btn btn-primary" onclick="addComment('12')">提交评论</button>
+
+                    <button class="btn btn-primary" onclick="showLogin()">点击登陆</button>
+
+                </div>
+
+                {#评论开始#}
+
+                <div class="col-12 list row">
+                    <div class="col-2 icon">
+                        <img src="/avatar/1" class="img-fluid" style="width: 45px;"/>
+                    </div>
+                    <div class="col-10 comment">
+                        <div class="col-12 row" style="padding: 0px">
+                            <div class="col-7 commenter">用户昵称</div>
+                            <div class="col-5 reply">
+                                {#  文章作者，管理员和评论者只能回复和影藏，不能点赞#}
+
+                                    <label onclick="gotoReply(1)">
+                                        <span class="oi oi-arrow-circle-right" aria-hidden="true"></span>回复
+                                    </label>&nbsp;&nbsp;&nbsp;
+                                    <label onclick="hideComment(this,1)">
+                                        <span class="oi oi-delete" aria-hidden="true"></span>隐藏
+                                    </label>&nbsp;&nbsp;&nbsp;
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-12 content">评论内容</div>
+                    </div>
+                </div>
+                {#评论结束#}
+
+
+            </div>
+
+        </div>
+{#评论区结束#}
+
+
+
+    </div>
+
+
+{% endblock base %}

@@ -89,7 +89,7 @@ def gettype():
 def aaa():
     # return 'gello .......'
 
-    return render_template('article-user.html', result=8)
+    return render_template('t1.html', result=8)
 
 # 添加文件下载功能
 @app.route("/download/<filename>")
