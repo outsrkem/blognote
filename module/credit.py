@@ -19,13 +19,12 @@ class Credit(DBase):
 
     # 判断用户是否已经消耗积分
     def check_payed_article(self, articleid):
-        result = dbsession.query(Credit).filter_by(userid=session.get('userid'), target=articleid).all() #返回的是一个列表
+        result = dbsession.query(Credit).filter_by(userid=session.get('userid'), target=articleid).all()  # 返回的是一个列表
         # print(result)
         if len(result) > 0:
             return True
         else:
             return False
-
 
 # if __name__ == '__main__':
 #     Credit().inster_detail(type='用户注册', target='0', credit=50)

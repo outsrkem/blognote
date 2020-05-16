@@ -144,6 +144,23 @@ CREATE TABLE `users` (
 -- Records of users
 -- ----------------------------
 
+-- ----------------------------
+-- Table structure for loginrecord
+-- ----------------------------
+DROP TABLE IF EXISTS `loginrecord`;
+CREATE TABLE `loginrecord` (
+  `tid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) DEFAULT NULL,
+  `logipaddr` varchar(30) DEFAULT NULL,
+  `createtime` datetime DEFAULT NULL,
+  PRIMARY KEY (`tid`),
+  KEY `userid` (`userid`),
+  CONSTRAINT `loginrecord_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of users
+-- ----------------------------
 
 INSERT INTO `blognote`.`users` (`username`, `password`, `nickname`, `avatar`, `qq`, `role`, `credit`) VALUES ('www.baidu.com', '123456!@#$%', NULL, NULL, NULL, 'user', '5');
 INSERT INTO `blognote`.`users` (`username`, `password`, `nickname`, `avatar`, `qq`, `role`, `credit`) VALUES ('yong.com', '123456!@#$%', NULL, NULL, NULL, 'user', '5');

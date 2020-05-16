@@ -3,6 +3,7 @@ from common.utility import ImageCode, gen_email_code, send_email
 import re
 from module.users import Users
 from module.credit import Credit
+from module.loginrecords import Loginrecords
 import hashlib
 
 user = Blueprint('user', __name__)
@@ -15,7 +16,7 @@ def vcode():
     response = make_response(bstring)
     response.headers['Content-Type'] = 'image/jpeg'
     session['vcode'] = code.lower()
-    print('controller/user.py，接口获取保存的验证码内容：%s' % session.get('vcode'))
+    # print('controller/user.py，接口获取保存的验证码内容：%s' % session.get('vcode'))
     return response
 
 @user.route('/ecode', methods=['POST'])
@@ -67,6 +68,7 @@ def register():
 @user.route('/login', methods=['POST'])
 def login():
     user = Users()
+    ipaddr = request.remote_addr  # 获取登录用户的ip地址
     username = request.form.get('username').strip()
     password = request.form.get('password').strip()
     vcode = request.form.get('vcode').lower().strip()
@@ -75,7 +77,7 @@ def login():
 
     if vcode != session.get('vcode') and vcode != '1111':
         # 此处有session['ecode']过期时间的问题
-        print('controller/user.py，登录时session中的验证码内容：%s'%session.get('vcode'))
+        # print('controller/user.py，登录时session中的验证码内容：%s'%session.get('vcode'))
         return 'vcode-error'
     else:
         # 实现登录
@@ -87,9 +89,14 @@ def login():
             session['username'] = username
             session['nickname'] = result[0].nickname
             session['role'] = result[0].role
-            # 跟新积分详情表
+            session['vcode'] = '' # 登录成功之后清空验证码
+            # 更新积分详情表
             Credit().inster_detail(type='用户登录', target='0', credit=1)
             user.update_credit(1)
+
+            # 记录登录日志到数据库
+            Loginrecords().loginrecord(ipaddr)
+
             # 将cookie写入浏览器
             response = make_response('login-pass')
             response.set_cookie('username', username, max_age=30*24*3600)
@@ -105,9 +112,11 @@ def logout():
     session.clear()
     response = make_response('注销登录并重定向', 302)
     response.headers['location'] = url_for('index.home')
+
     # 清空cookie，下面2条一样的效果，都是清空cookie
-    response.delete_cookie('username')
-    response.set_cookie('password', '',max_age=0)
+    response.delete_cookie('username')  # 删除cookie
+    response.set_cookie('password', '',max_age=0)  # 设置cookie保存时间为0，即马上过期，效果和删除一样
+
     # return  redirect('/')
     return response
 

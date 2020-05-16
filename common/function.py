@@ -19,16 +19,4 @@ def pagination(page, total):
     # [1, '...', 28, 29, 30, 31, 32, '...', 50]
     return page_range
 
-# Mysql连接信息
-def loginfo():
-    DB_USERNAME = 'blognote'
-    DB_PASSWORD = '123456'
-    try:
-        DB_HOSTIP = os.environ['DB_HOSTIP']
-    except Exception:
-        DB_HOSTIP = '10.10.10.24'
-    DB_PORT = '3306'
-    DB_DATABASE = 'blognote'
-    return DB_USERNAME, DB_PASSWORD, DB_HOSTIP, DB_PORT, DB_DATABASE
-print('数据库连接信息---> {用户名:%s,密码:%s,数据库IP:%s,数据库端口:：%s,数据库名称:%s}'%loginfo())
 

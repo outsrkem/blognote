@@ -1,10 +1,10 @@
 import random, string, os
 from io import BytesIO
-from main import STATIC_DIRS
+from config import BASE_DIR
 from PIL import Image, ImageFont, ImageDraw
 
 # 获取字体路径，用于验证码图片生成
-fontfile = os.path.join(STATIC_DIRS, "font", "arial.ttf")
+fontfile = os.path.join(BASE_DIR, "static", "font", "arial.ttf")
 # print(fontfile)
 
 class ImageCode:
