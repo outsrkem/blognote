@@ -1,30 +1,19 @@
 import logging, os, multiprocessing
 import logging.handlers
 from logging.handlers import WatchedFileHandler
-
 '''
 在项目目录里执行命令启动应用
 gunicorn -c gunicorn_config.py main:app
 '''
-
 # 获取工作目录
 BASE_DIR = os.path.abspath(os.curdir)
 bind = '0.0.0.0:5000'
 #进程数
 workers = multiprocessing.cpu_count() * 2 + 1
-#监听队列
-backlog = 512
 #gunicorn要切换到的目的工作目录
 chdir = BASE_DIR
-#超时
-timeout = 30
-#使用gevent模式，还可以使用sync 模式，默认的是sync模式
-worker_class = 'gevent'
 # pid文件
 pidfile = os.path.join(BASE_DIR, "flaskapp.pid")
-
-#指定每个进程开启的线程数
-threads = 3
 #日志级别，这个日志级别指的是错误日志的级别，而访问日志的级别无法设置
 loglevel = 'info'
 access_log_format = '%(t)s %(p)s %(h)s "%(r)s" %(s)s %(L)s %(b)s %(f)s" "%(a)s"'

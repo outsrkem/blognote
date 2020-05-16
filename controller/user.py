@@ -73,6 +73,8 @@ def login():
 
 
     if vcode != session.get('vcode') and vcode != '1111':
+        # 此处有session['ecode']过期时间的问题
+        print('controller/user.py，验证码内容：%s'%session.get('vcode'))
         return 'vcode-error'
     else:
         # 实现登录
