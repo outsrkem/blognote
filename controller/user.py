@@ -68,7 +68,10 @@ def register():
 @user.route('/login', methods=['POST'])
 def login():
     user = Users()
-    ipaddr = request.remote_addr  # 获取登录用户的ip地址
+    if request.headers.getlist("X-Forwarded-For"):
+        ipaddr = request.headers.getlist("X-Forwarded-For")[0]  #  获取请求头部的IP ，用于nginx代理后获取用户的源ip
+    else:
+        ipaddr = request.remote_addr  # 获取请求ip地址
     username = request.form.get('username').strip()
     password = request.form.get('password').strip()
     vcode = request.form.get('vcode').lower().strip()

@@ -15,7 +15,7 @@ chdir = BASE_DIR
 # pid文件
 pidfile = os.path.join(BASE_DIR, "flaskapp.pid")
 #日志级别，这个日志级别指的是错误日志的级别，而访问日志的级别无法设置
-loglevel = 'info'
+loglevel = 'debug'
 access_log_format = '%(t)s %(p)s %(h)s "%(r)s" %(s)s %(L)s %(b)s %(f)s" "%(a)s"'
 # 访问日志
 accesslog = os.path.join(BASE_DIR, "access.log")
