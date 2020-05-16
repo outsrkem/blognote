@@ -15,6 +15,7 @@ def vcode():
     response = make_response(bstring)
     response.headers['Content-Type'] = 'image/jpeg'
     session['vcode'] = code.lower()
+    print('controller/user.py，接口获取保存的验证码内容：%s' % session.get('vcode'))
     return response
 
 @user.route('/ecode', methods=['POST'])
@@ -74,7 +75,7 @@ def login():
 
     if vcode != session.get('vcode') and vcode != '1111':
         # 此处有session['ecode']过期时间的问题
-        print('controller/user.py，验证码内容：%s'%session.get('vcode'))
+        print('controller/user.py，登录时session中的验证码内容：%s'%session.get('vcode'))
         return 'vcode-error'
     else:
         # 实现登录
