@@ -4,3 +4,5 @@ __pycache__/*
 .idea/
 .idea/*
 git-updata.bat
+static/blognote-data.sql
+static/install.sql
