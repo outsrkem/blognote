@@ -17,7 +17,6 @@ db = SQLAlchemy(app)  # 实例化db对象
 BASE_DIR = os.path.abspath(os.curdir)
 STATIC_DIRS = os.path.join(BASE_DIR, "static")
 
-
 # 定制404返回页面
 @app.errorhandler(404)
 def page_not_found(error):

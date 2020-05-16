@@ -76,7 +76,7 @@ def send_email(receiver, ecode):
     message = MIMEText(content, 'html', 'utf-8')
     message['Subject'] = Header('博客验证码', 'utf-8')
     message['From'] = sender  # 发送者
-    message['To'] = receiver# 接收者
+    message['To'] = receiver  # 接收者
 
     subject = 'Python SMTP 邮件测试'
 
