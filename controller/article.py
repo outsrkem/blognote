@@ -10,6 +10,7 @@ article = Blueprint('article', __name__)
 
 # 阅读文章
 @article.route('/type/article/<int:articleid>')
+@article.route('/search/<int:articleid>')
 @article.route('/article/<int:articleid>')
 def read(articleid):
     try:
