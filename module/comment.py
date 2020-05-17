@@ -82,7 +82,12 @@ class Comment(DBase):
             # 为comment_list 列表中的原始数据评论字典添加一个新key 叫 reply_list
             # 用于存储当前这条原始评论的所有回复评论，如果没有回复评论则列表值为空
             comment['reply_list'] = model_join_list(result)
-        return comment_list
+        return comment_list  # 将新的数据结构返回给控制器接口
+
+    # 查询某篇文章的原始评论总数量
+    def get_count_by_article(self, articleid):
+        count = dbsession.query(Comment).filter_by(articleid=articleid, hidden=0,replyid=0).count()
+        return count
 
 
 

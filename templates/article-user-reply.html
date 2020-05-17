@@ -52,8 +52,8 @@
         <!--文章内容-->
 
 
-        <div class="col-12 article-nav" style="border: red double">
-            <div style="border: red double">版权所有，转载本站文章请注明出处 http://www.woniunote.com/article/{{ article.articleid }}</div>
+        <div class="col-12 article-nav">
+            <div>版权所有，转载本站文章请注明出处 http://www.woniunote.com/article/{{ article.articleid }}</div>
             <div>上一篇：
                 <a href="/article/{{ prev_next.prev_id }}">{{ prev_next.prev_headline }}</a>
             </div>
@@ -64,13 +64,13 @@
 
         {#    评论区开始#}
         <div class="col-12 article-comment" id="commenttop">
-            <div class="col-12 row article-detail">
+            <div class="col-12 row add-comment ">
 
                 <div class="col-2">
                     <label for="nickname">你的昵称：</label>
                 </div>
 
-                <div class="col-10 ">
+                <div class="col-10">
                     {% if session.get('islogin') == 'true' %}
                         <input type="text" id="nickname" class="form-control" value="{{ session.get('nickname') }}"
                                readonly/>
@@ -82,7 +82,7 @@
 
             </div>
 
-            <div class="col-12 row article-detail">
+            <div class="col-12 row">
 
                 <div class="col-2">
                     <label for="comment">你的评论：</label>
@@ -94,7 +94,7 @@
 
             </div>
 
-            <div class="col-12 row article-detail">
+            <div class="col-12 row">
 
                 <div class="col-12" style="text-align: right">
                     {% if session.get('islogin') == 'true' %}
@@ -110,7 +110,6 @@
                 </div>
 
                 {#评论开始#}
-                <div class="col-12" id="commentDiv">
                 {% for comment in comment_list %}
                     <div class="col-12 list row">
                         <div class="col-2 icon">
@@ -182,19 +181,7 @@
                     {% endif %}
                     <!--回复评论的显示结束-->
                 {% endfor %}
-                <!--评论区页码开始-->
-                {% if total > 1 %}
-                    <div class="col-12 paginate">
-                        <label onclick="gotoPage()">上一页</label>&nbsp;&nbsp;
-                        {% for i in range(total) %}
-                            <label onclick="gotoPage()">{{ i + 1 }}</label>&nbsp;&nbsp;
-                        {% endfor %}
-                        <label onclick="gotoPage()">下一页</label>&nbsp;&nbsp;
-                    </div>
-                {% endif %}
-                <!--评论区页码结束-->
                 {#评论结束#}
-                </div>
             </div>
         </div>
         {#评论区结束#}
@@ -345,52 +332,31 @@
         }
 
         function agreeComment(obj, commentid) {
-            param = "type=1&commentid=" + commentid;
-            $.post('/opinion', param, function (data) {
-                // 赞成成功后，将赞成数量+1并填充到页面中
-                if (data == 'opinion-pass') {
-                    // 获取到当前元素下的第2个span标签元素
-                    var element = $(obj).children('span').eq(1);
-                    // 获取到赞成数量，并将其转换为整数
-                    var count = parseInt(element.text());
-                    element.text(count + 1);
-                }
-            })
-        }
+        param = "type=1&commentid=" + commentid;
+        $.post('/opinion', param, function (data) {
+            // 赞成成功后，将赞成数量+1并填充到页面中
+            if (data == 'opinion-pass') {
+                // 获取到当前元素下的第2个span标签元素
+                var element = $(obj).children('span').eq(1);
+                // 获取到赞成数量，并将其转换为整数
+                var count = parseInt(element.text());
+                element.text(count+1);
+            }
+        })
+    }
 
-        function opposeComment(obj, commentid) {
-            param = "type=0&commentid=" + commentid;
-            $.post('/opinion', param, function (data) {
-                // 反对成功后，将反对数量-1并填充到页面中
-                if (data == 'opinion-pass') {
-                    // 获取到当前元素下的第2个span标签元素
-                    var element = $(obj).children('span').eq(1);
-                    // 获取到赞成数量，并将其转换为整数
-                    var count = parseInt(element.text());
-                    element.text(count + 1);
-                }
-            })
-        }
-
-    var PAGE = 1;   // 定义全局变量用于记录前面在哪一页，默认在第1页
-    var TOTAL = {{total}};  // 定义总页数，由模板引擎先引填充
-
-    // 添加gotoPage函数对应的代码
-    function gotoPage(articleid, type) {
-        // 如果当前面是第1页，则上一页还是第1页
-        if (type == 'prev') {
-            if (PAGE > 1)
-                PAGE -= 1;
-        }
-        // 如果当前页是是后一页，则下一页还是最后一页
-        else if (type == 'next') {
-            if (PAGE < TOTAL)
-                PAGE += 1;
-        }
-        else {
-            PAGE = parseInt(type);
-        }
-        fillComment(articleid, PAGE);
+    function opposeComment(obj, commentid) {
+        param = "type=0&commentid=" + commentid;
+        $.post('/opinion', param, function (data) {
+            // 反对成功后，将反对数量-1并填充到页面中
+            if (data == 'opinion-pass') {
+                // 获取到当前元素下的第2个span标签元素
+                var element = $(obj).children('span').eq(1);
+                // 获取到赞成数量，并将其转换为整数
+                var count = parseInt(element.text());
+                element.text(count+1);
+            }
+        })
     }
     </script>
 

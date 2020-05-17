@@ -1,3 +1,5 @@
+import math
+
 from flask import Blueprint, abort, render_template, request
 from module.article import Article
 from module.comment import Comment
@@ -45,13 +47,14 @@ def read(articleid):
 
     # 显示当前文章对应的评论
     # comment_user = Comment().find_limit_with_user(articleid,0,50) # 此条没有回复评论
-    comment_list = Comment().get_comment_user_list(articleid,0,50)
+    comment_list = Comment().get_comment_user_list(articleid,0,4)
     # for i in comment_list:
     #     print(i)
-
+    count = Comment().get_count_by_article(articleid)
+    total = math.ceil(count / 4)
 
     return render_template('article-user.html', article=dict, position=position, payed=payed,
-                           is_favorite=is_favorite, prev_next=prev_next,comment_list=comment_list)
+                           is_favorite=is_favorite, prev_next=prev_next,comment_list=comment_list,total=total)
 
 '''
 评论和回复评论的数据结构
