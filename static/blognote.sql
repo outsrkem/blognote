@@ -54,7 +54,7 @@ CREATE TABLE `comment` (
   `articleid` int(11) NOT NULL COMMENT '关联文章表信息',
   `content` text COMMENT '评论的内容',
   `ipaddr` varchar(30) DEFAULT NULL COMMENT '评论用户的IP地址',
-  `replyid` int(11) DEFAULT NULL COMMENT '是否为原始评论及被回复评论的ID号',
+  `replyid` int(11) DEFAULT '0' COMMENT '是否为原始评论及被回复评论的ID号，0 为原始评论',
   `agreecount` int(11) DEFAULT '0' COMMENT '赞同该评论的数量',
   `opposecount` int(11) DEFAULT '0' COMMENT '反对该评论的数量',
   `hidden` tinyint(255) DEFAULT '0' COMMENT '评论是否被隐藏',

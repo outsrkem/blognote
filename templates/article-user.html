@@ -96,7 +96,8 @@
 
                 <div class="col-12" style="text-align: right">
                     {% if session.get('islogin') == 'true' %}
-                    <button class="btn btn-primary" onclick="addComment('{{ article.articleid }}')">提交评论</button>
+                    <button class="btn btn-primary" onclick="addComment('{{ article.articleid }}')" id="submitBtn">提交评论</button>
+                    <button type="button" class="btn btn-primary" onclick="replyComment({{ article['articleid'] }})" style="display: none;" id="replyBtn">回复评论</button>
                     {% else %}
                     <button class="btn btn-primary" onclick="showLogin()">点击登陆</button>
                     {% endif %}
@@ -147,8 +148,6 @@
 
         </div>
 {#评论区结束#}
-
-
 <!--
         <div class="col-12 article-comment" id="commenttop">
             <div class="col-12 row add-comment ">
@@ -256,10 +255,55 @@
             else if (data =='add-pass') {
                 location.reload();
             }
+            else if (data == 'not-login'){
+                bootbox.alert({title:"错误提示", message:"你还没有登录，不能发表评论."});
+            }
             else {
                 bootbox.alert({title:"错误提示", message:"发表评论出错，请联系管理员."});
             }
         });
     }
+
+    // 两种方式来传递commentid
+    // 1. 使用全局变量
+    // 2. 使用一个临时DIV或隐藏的表单做中转<div id="temp" style="display: none">12345</div>
+    // 此处使用第二种方法，定义全局变量，与函数同级，用于中转保存被回复评论的ID号
+    var COMMENTID= 0;
+    function gotoReply(commentid) {
+        $("#submitBtn").hide();     // 隐藏发表评论按钮
+        $("#replyBtn").show();      // 显示回复评论按钮
+        $("#nickname").val("请在此回复编号为 " + commentid + " 的评论");
+        $("#comment").focus();      // 让文本域获取焦点
+        COMMENTID= commentid;  // 修改全局变量的值为当前被回复评论的iD
+    }
+    function replyComment(articleid) {
+        var content = $.trim($("#comment").val());
+        if (content.length < 5 || content.length > 1000) {
+            bootbox.alert({title: "错误提示", message: "评论内容在5-1000字之间."});
+            return false;
+        }
+        var param = 'articleid=' + articleid;
+        param += '&content=' + content;
+        param += '&commentid=' + COMMENTID;
+        $.post('/reply', param, function (data) {
+            if (data == 'content-invalid') {
+                bootbox.alert({title: "错误提示", message: "评论内容在5-1000字之间."});
+            }
+            else if (data == 'reply-limit') {
+                bootbox.alert({title:"错误提示", message:"当天已用完5条评论的限额."});
+            }
+            else if (data =='reply-pass') {
+                location.reload();
+            }
+            else if (data == 'reply-fail') {
+                bootbox.alert({title:"错误提示", message:"回复评论出错，请联系管理员."});
+            }
+            else if (data == 'not-login'){
+                bootbox.alert({title:"错误提示", message:"你还没有登录，请登录后操作."});
+            }
+        });
+    }
+
 </script>
+
 {% endblock base %}
