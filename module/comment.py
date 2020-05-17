@@ -3,6 +3,7 @@ from sqlalchemy import Table
 from common.database import dbconnect
 import time
 
+from common.utility import model_join_list
 from module.users import Users
 
 dbsession, md, DBase = dbconnect()
@@ -58,7 +59,38 @@ class Comment(DBase):
         dbsession.commit()
 
     # 查原始评论与对应的用户信息，带分页参数
+    def find_comment_with_user(self, articleid, start, count):
+        result = dbsession.query(Comment, Users).join(Users, Users.userid ==
+                 Comment.userid).filter(Comment.articleid == articleid,
+                 Comment.hidden == 0, Comment.replyid == 0)\
+            .order_by(Comment.commentid.desc()).limit(count).offset(start).all()
+        return result
+
+    #查询回复评论，回复评论不需要分页
+    def find_reply_with_user(self, replyid):
+        result = dbsession.query(Comment, Users).join(Users, Users.userid ==
+                 Comment.userid).filter(Comment.replyid == replyid, Comment.hidden == 0).all()
+        return result
+
+    # 根据原始评论和回复评论生成一个关联列表
+    def get_comment_user_list(self, articleid, start, count):
+        result = self.find_comment_with_user(articleid,start,count)
+        comment_list = model_join_list(result)  #原始评论的连接结果
+        for comment in comment_list:
+            # 查询原始评论的回复评论，并转换为列表保存在comment_list中
+            result = self.find_reply_with_user(comment['commentid'])
+            # 为comment_list 列表中的原始数据评论字典添加一个新key 叫 reply_list
+            # 用于存储当前这条原始评论的所有回复评论，如果没有回复评论则列表值为空
+            comment['reply_list'] = model_join_list(result)
+        return comment_list
 
 
 
-    #
+
+
+
+
+
+
+
+

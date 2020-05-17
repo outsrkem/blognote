@@ -43,10 +43,31 @@ def read(articleid):
     # 获取当前文章的上一篇和下一篇
     prev_next = Article().find_prev_next_by_id(articleid)
 
-    # 显示评论
-    comment_user = Comment().find_limit_with_user(articleid,0,50)
+    # 显示当前文章对应的评论
+    # comment_user = Comment().find_limit_with_user(articleid,0,50) # 此条没有回复评论
+    comment_list = Comment().get_comment_user_list(articleid,0,50)
+    # for i in comment_list:
+    #     print(i)
+
+
     return render_template('article-user.html', article=dict, position=position, payed=payed,
-                           is_favorite=is_favorite, prev_next=prev_next,comment_user=comment_user)
+                           is_favorite=is_favorite, prev_next=prev_next,comment_list=comment_list)
+
+'''
+评论和回复评论的数据结构
+[
+    {'content': '这是www@baidu.com 的评论','reply_list': 
+        [
+            {
+                'content': '这是回复文章id为1的回复--4444'    
+            }
+            {
+                'content': '这是回复文章id为1的回复--4444'    
+            }
+        ]
+    }
+]
+'''
 
 # 消耗积分的文章展示文章剩余内容，虽然这个接口不显示，但是还要处理，已防绕开前端界面被直接调用
 @article.route('/article/readall', methods=['POST'])

@@ -89,11 +89,11 @@ def gettype():
     }
     return dict(article_ytpe=type)
 
-@app.route('/aaa')
+#@app.route('/aaa')
 def aaa():
-    # return 'gello .......'
+    return 'gello .......'
 
-    return render_template('t1.html', result=8)
+
 
 # 添加文件下载功能
 @app.route("/download/<filename>")
