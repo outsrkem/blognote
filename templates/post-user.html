@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <title>文章发布</title>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='img/favicon.ico') }}"/>
-    <script type="text/javascript" src="static/jquery-3.4.1/jquery-3.4.1.js"></script>
-    <link rel="stylesheet" type="text/css" href="static/bootstrap-4.4.1/css/bootstrap.css"/>
-    <script type="text/javascript" src="static/bootstrap-4.4.1/js/bootstrap.js"></script>
-    <link rel="stylesheet" type="text/css" href="static/bootstrap-4.4.1/css/mystyle.css"/>
+    <script type="text/javascript" src="/jquery-3.4.1/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="/bootstrap-4.4.1/css/bootstrap.css"/>
+    <script type="text/javascript" src="/bootstrap-4.4.1/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="/bootstrap-4.4.1/css/mystyle.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scaalable=yes"/>
 
 	<!-- 配置文件 -->
-	<script type="text/javascript" src="static/ueditor-utf8/ueditor.config.js"></script>
-	<script type="text/javascript" src="static/ueditor-utf8/ueditor.all.js"></script>
-    <script type="text/javascript" src="static/ueditor-utf8/lang/zh-cn/zh-cn.js"></script>
+	<script type="text/javascript" src="/ueditor-utf8/ueditor.config.js"></script>
+	<script type="text/javascript" src="/ueditor-utf8/ueditor.all.js"></script>
+    <script type="text/javascript" src="/ueditor-utf8/lang/zh-cn/zh-cn.js"></script>
 	<!-- 实例化编辑器 -->
     <script type="text/javascript">
 	    var ue = UE.getEditor('content', {
@@ -21,7 +21,9 @@
             autoHeightEnabled: true,
             autoFloatEnabled:false,
             elementPathEnabled:false,
-            wordCount:true
+            wordCount:true,
+            serverUrl: '/uedit'
+
         });
 	</script>
 </head>

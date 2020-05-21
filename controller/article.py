@@ -90,4 +90,6 @@ def read_all():
         Users().update_credit(credit=-1*result[0].credit)
     return content
 
-
+@article.route('/prepost')
+def add_prepost():
+    return render_template('post-user.html')
