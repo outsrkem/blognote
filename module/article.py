@@ -1,6 +1,8 @@
+from flask import session
 from sqlalchemy import Table, func
 from common.database import dbconnect
 from module.users import Users
+import time
 
 dbsession, md, DBase = dbconnect()
 
@@ -103,17 +105,19 @@ class Article(DBase):
         article.readcount += 1
         dbsession.commit()
 
-# 用于显示上一篇和一下篇
+    # 用于显示上一篇和一下篇
     # 根据文章编号查询文章标题
     def find_headline_by_id(self, articleid):
         row = dbsession.query(Article.headline).filter_by(articleid=articleid).first()
         return row.headline
+
     # 获取当前文章的上一篇肯下一篇
     def find_prev_next_by_id(self, articleid):
         dict = {}
         # 查询比当前编号小的最大的一个(即上一篇)
         row = dbsession.query(Article).filter(Article.hidden == 0, Article.drafted == 0, Article.checked == 1,
-              Article.articleid<articleid).order_by(Article.articleid.desc()).limit(1).first()
+                                              Article.articleid < articleid).order_by(Article.articleid.desc()).limit(
+            1).first()
         # 如果已经是第一篇，则上一篇也是当前文章
         if row is None:
             prev_id = articleid
@@ -125,7 +129,8 @@ class Article(DBase):
 
         # 查询比当前编号大的最小的一个（即下一篇）
         row = dbsession.query(Article).filter(Article.hidden == 0, Article.drafted == 0, Article.checked == 1,
-              Article.articleid > articleid).order_by(Article.articleid).limit(1).first()
+                                              Article.articleid > articleid).order_by(Article.articleid).limit(
+            1).first()
         # 如果已经是最后一篇，则下一篇也是当前文章
         if row is None:
             next_id = articleid
@@ -137,25 +142,19 @@ class Article(DBase):
         return dict
 
     # 增加回复次数
-    def update_replycount(self,articleid):
+    def update_replycount(self, articleid):
         row = dbsession.query(Article).filter_by(articleid=articleid).first()
         row.replycount += 1
         dbsession.commit()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # 插入一篇新的文章
+    def instert_article(self, type, headline, content, thumbnail, credit, drafted=0, checked=1):
+        now = time.strftime('%Y-%m-%d %H:%M:%S')
+        userid = session.get('userid')
+        print(type, headline, content, thumbnail, credit, drafted, checked)
+        article = Article(userid=userid, type=type, headline=headline, content=content,
+                          thumbnail=thumbnail, credit=credit, drafted=drafted,
+                          checked=checked, createtime=now, updatetime=now)
+        dbsession.add(article)
+        dbsession.commit()
+        return article.articleid  # 返回新文章的id，便于跳转

@@ -197,6 +197,7 @@ label {
     word-break: break-all;
     word-wrap: break-word;
 }
+/*设置上传的图片的大小不能超过父容器的宽度*/
 .article-detail .content img {
     border: solid 1px #999999;
     display: block;

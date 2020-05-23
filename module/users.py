@@ -28,3 +28,7 @@ class Users(DBase):
         user = dbsession.query(Users).filter_by(userid=session.get('userid')).one()
         user.credit = int(user.credit) + credit
         dbsession.commit()
+
+    def find_by_userid(self, userid):
+        user = dbsession.query(Users).filter_by(userid=userid).one()
+        return user
