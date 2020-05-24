@@ -1,6 +1,7 @@
 # config.py
 import os
 # 调试模式
+
 DEBUG = True
 
 # 应用端口号
@@ -14,7 +15,7 @@ SECRET_KEY = 'wderqeyJ2Y29kZSI6ImxkbG4ifQ.Xr-Lbg.ojkAcx7BZx7590luvEIvhYASA_8'
 
 # 用于获取根路径
 BASE_DIR = os.path.abspath(os.curdir)
-
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 定义数据库连接信息
 def loginfo():
     DB_USERNAME = 'blognote'
@@ -28,4 +29,3 @@ def loginfo():
     # print('数据库连接信息---> {用户名:%s,密码:%s,数据库IP:%s,数据库端口:：%s,数据库名称:%s}' % (DB_USERNAME , DB_PASSWORD,DB_HOSTIP,DB_PORT,DB_DATABASE))
     return DB_USERNAME, DB_PASSWORD, DB_HOSTIP, DB_PORT, DB_DATABASE
 DB_INFO = loginfo()
-

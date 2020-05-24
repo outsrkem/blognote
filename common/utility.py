@@ -1,3 +1,4 @@
+import datetime
 import random, string, os, time
 from io import BytesIO
 from config import BASE_DIR
@@ -5,6 +6,8 @@ from PIL import Image, ImageFont, ImageDraw
 
 # 获取字体路径，用于验证码图片生成
 fontfile = os.path.join(BASE_DIR, "static", "font", "arial.ttf")
+
+
 # BASE_DIR = 'D:\\linux\\Python\\flask-1\\blognote'
 
 
@@ -108,12 +111,17 @@ def gen_email_code():
 # 单个模型类转换为标准python list 数据
 def model_list(result):
     list = []
+    print(result)
     for row in result:
         dict = {}
         for k, v in row.__dict__.items():
             if not k.startswith('_sa_instance_state'):
+                # 若果某个字段存在datatime，则将其转换为字符串,用于redis时处理问题
+                if isinstance(v, datetime):
+                    v = v.strftime('%Y-%m-%d %H:%M:%S')
                 dict[k] = v
-            list.append(dict)
+        list.append(dict)
+    print(list)
     return list
 
 
@@ -187,10 +195,11 @@ def generate_thumb(url_list):
     filename = url.split('/')[-1]  # 获取文件名
     suffix = filename.split('.')[-1]  # 获取文件后缀
     thumbname = time.strftime('%Y%m%d%H%M%S.' + suffix)  # 以时间戳和后缀为新文件名
-    download_image(url, os.path.join(BASE_DIR, "static", "download", thumbname))   # 下载文件
+    download_image(url, os.path.join(BASE_DIR, "static", "download", thumbname))  # 下载文件
     compress_images(os.path.join(BASE_DIR, "static", "download", thumbname),
-                    os.path.join(BASE_DIR, "static", "thumb", thumbname), 400)   # 处理后保存到thumb目录
+                    os.path.join(BASE_DIR, "static", "thumb", thumbname), 400)  # 处理后保存到thumb目录
     return thumbname
+
 
 """
 if __name__ == '__main__':

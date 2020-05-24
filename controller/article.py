@@ -27,9 +27,9 @@ def read(articleid):
     for k, v in result[0].__dict__.items():
         if not k.startswith('_sa_instance_state'):
             dict[k] = v
-    print(dict)
+    # print(dict)
     dict['nickname'] = result.nickname
-    print()
+    # print()
 
     # ，如果没有消耗过积分显示一半文章
     payed = Credit().check_payed_article(articleid)
@@ -112,7 +112,7 @@ def add_article():
     drafted = int(request.form.get('drafted'))
     checked = int(request.form.get('checked'))
     if session.get('userid') is None:
-        print(session.get('userid'))
+        # print(session.get('userid'))
         return 'perm-denied'
     else:
         user = Users().find_by_userid(session.get('userid'))

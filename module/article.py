@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from flask import session
 from sqlalchemy import Table, func
 from common.database import dbconnect
+from common.utility import model_list
 from module.users import Users
 import time
 
@@ -151,10 +154,52 @@ class Article(DBase):
     def instert_article(self, type, headline, content, thumbnail, credit, drafted=0, checked=1):
         now = time.strftime('%Y-%m-%d %H:%M:%S')
         userid = session.get('userid')
-        print(type, headline, content, thumbnail, credit, drafted, checked)
+        # print(type, headline, content, thumbnail, credit, drafted, checked)
         article = Article(userid=userid, type=type, headline=headline, content=content,
                           thumbnail=thumbnail, credit=credit, drafted=drafted,
                           checked=checked, createtime=now, updatetime=now)
         dbsession.add(article)
         dbsession.commit()
         return article.articleid  # 返回新文章的id，便于跳转
+
+    # ====================admin
+    #     获取个人文章
+    def get_my_article(self):
+        userid = session.get('userid')
+        result = dbsession.query(Article).filter_by(userid=userid).all()
+        print(result)
+        newlist = []
+        dict = {}
+        x = 0
+        for row in result:
+            list = []
+            print(row.articleid, row.headline)
+            articleid = row.articleid
+            headline = row.headline
+            # dict[articleid] = headline
+            list.append(articleid)
+            list.append(headline)
+            newlist.append(list)
+        '''
+        for row in result:
+            dict = {}
+            for k, v in row.__dict__.items():
+                if not k.startswith('_sa_instance_state'):
+                    # 若果某个字段存在datatime，则将其转换为字符串,用于redis时处理问题
+                    if isinstance(v, datetime):
+                        v = v.strftime('%Y-%m-%d %H:%M:%S')
+                    dict[k] = v
+            list.append(dict)
+        print(list)
+        '''
+        return newlist
+
+    # 删除文章
+    def delete_my_article(self, articleid):
+        print(articleid)
+        try:
+            dbsession.query(Article).filter_by(articleid=articleid).delete()
+            dbsession.commit()
+            return 'del-pass'
+        except:
+            return 'del-error'

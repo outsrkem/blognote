@@ -13,9 +13,8 @@ app.config['SECRET_KEY'] = app.config['SECRET_KEY']
 # 使用flask_sqlalchemy 集成方式连接数据库
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blognote:123456@10.10.10.24/blognote?charset=utf8'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://%s:%s@%s:%s/%s?charset=utf8' % loginfo()
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://%s:%s@%s:%s/%s?charset=utf8' %app.config['DB_INFO']
-print('数据库连接信息---> {用户名:%s,密码:%s,数据库IP:%s,数据库端口:：%s,数据库名称:%s}' % app.config['DB_INFO'])
+# print('数据库连接信息---> {用户名:%s,密码:%s,数据库IP:%s,数据库端口:：%s,数据库名称:%s}' % app.config['DB_INFO'])
 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -90,9 +89,9 @@ def gettype():
     return dict(article_ytpe=type)
 
 #@app.route('/aaa')
-def aaa():
+# def aaa():
     # return 'gello .......'
-    return render_template('post-user.html')
+    # return render_template('')
 
 
 # 添加文件下载功能
@@ -131,6 +130,7 @@ if __name__ == '__main__':
     from controller.favorite import *
     from controller.comment import *
     from controller.ueditor import *
+    from admin.controller.admin import *
 
     # app.register_blueprint(user, url_prefix='/user')
     app.register_blueprint(index)  # 把蓝图注册到app中
@@ -139,6 +139,7 @@ if __name__ == '__main__':
     app.register_blueprint(favorite)
     app.register_blueprint(commnet)
     app.register_blueprint(ueditor)
+    app.register_blueprint(admin)
 
 
     app.run(debug=app.config['DEBUG'])
