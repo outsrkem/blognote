@@ -149,6 +149,20 @@ CREATE TABLE `loginrecord` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='登录日志表';
 
 -- ----------------------------
+-- Table structure for options
+-- ----------------------------
+DROP TABLE IF EXISTS `options`;
+CREATE TABLE `options` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL,
+  `value` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='配置表';
+INSERT INTO `options` (`name`, `value`) VALUES ('title', 'Outsrkem');
+INSERT INTO `options` (`name`, `value`) VALUES ('description', '度德而处之，量力而行之。');
+INSERT INTO `options` (`name`, `value`) VALUES ('siteUrl', 'http://127.0.0.1');
+
+-- ----------------------------
 -- Records of users
 -- ----------------------------
 

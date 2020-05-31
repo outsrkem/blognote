@@ -110,14 +110,14 @@ label {
     background-color: whitesmoke;
 }
 .side .tip {
-    background-color: #333333;
+    background-color: #563d7c;
     height: 42px;
     color: white;
     line-height: 42px;
     padding-left: 10px;
     border-radius: 0px;
     font-size: 18px;
-    border-bottom: solid 2px orangered;
+    /*border-bottom: solid 2px orangered;*/
 }
 .side ul {
     list-style: none;
