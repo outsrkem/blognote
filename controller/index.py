@@ -25,7 +25,6 @@ def home():
     context['last'] = last
     context['most'] = most
     context['recommended'] = recommended
-    print(context['result'])
     return render_template('index.html', context=context, result=result, page=page, page_range=page_range, total=total, last=last, most=most, recommended=recommended)
 
 
